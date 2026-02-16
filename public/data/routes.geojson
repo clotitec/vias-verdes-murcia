@@ -1,0 +1,251 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_mazarron",
+        "nombre": "Vía Verde de Mazarrón",
+        "descripcion_corta": "Ruta costera que conecta el antiguo trazado ferroviario minero con vistas al Mediterráneo y patrimonio industrial.",
+        "dificultad": "fácil",
+        "distancia_km": 7.5,
+        "tiempo_estimado_min": 90,
+        "superficie": "asfalto",
+        "color": "#D4763B",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=127",
+        "url_tour_360": "https://tourmkr.com/F1ObKz1iHJ",
+        "tipo_uso": ["senderismo", "cicloturismo", "accesible"],
+        "perfil_elevacion": "suave"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.262, 37.598],
+          [-1.268, 37.595],
+          [-1.275, 37.591],
+          [-1.283, 37.587],
+          [-1.291, 37.582],
+          [-1.298, 37.578],
+          [-1.305, 37.573],
+          [-1.312, 37.569],
+          [-1.320, 37.565],
+          [-1.328, 37.560],
+          [-1.335, 37.556]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_almendricos",
+        "nombre": "Vía Verde de Almendricos",
+        "descripcion_corta": "Recorrido por el antiguo ferrocarril minero con túneles históricos y paisajes semiáridos únicos.",
+        "dificultad": "media",
+        "distancia_km": 12.3,
+        "tiempo_estimado_min": 150,
+        "superficie": "mixto",
+        "color": "#6B8E4E",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=71",
+        "url_tour_360": "https://tourmkr.com/F1vnWCq1kt",
+        "tipo_uso": ["senderismo", "cicloturismo", "MTB"],
+        "perfil_elevacion": "moderado"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.707, 37.548],
+          [-1.715, 37.544],
+          [-1.723, 37.540],
+          [-1.732, 37.536],
+          [-1.740, 37.531],
+          [-1.748, 37.527],
+          [-1.756, 37.522],
+          [-1.764, 37.518],
+          [-1.772, 37.513],
+          [-1.780, 37.509],
+          [-1.788, 37.504],
+          [-1.796, 37.500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_campo_cartagena",
+        "nombre": "Vía Verde del Campo de Cartagena",
+        "descripcion_corta": "Travesía agrícola por la huerta murciana con vestigios del antiguo tren bananero.",
+        "dificultad": "fácil",
+        "distancia_km": 15.8,
+        "tiempo_estimado_min": 180,
+        "superficie": "asfalto",
+        "color": "#4A90A4",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=41",
+        "url_tour_360": "https://tourmkr.com/F1klWjpUHD",
+        "tipo_uso": ["senderismo", "cicloturismo", "familiar"],
+        "perfil_elevacion": "llano"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-0.987, 37.605],
+          [-0.995, 37.610],
+          [-1.005, 37.615],
+          [-1.015, 37.620],
+          [-1.025, 37.625],
+          [-1.035, 37.630],
+          [-1.045, 37.635],
+          [-1.055, 37.640],
+          [-1.065, 37.645],
+          [-1.075, 37.650],
+          [-1.085, 37.655]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_noroeste",
+        "nombre": "Vía Verde del Noroeste",
+        "descripcion_corta": "La vía verde más larga de Murcia, atravesando paisajes de montaña y valles fluviales.",
+        "dificultad": "media",
+        "distancia_km": 78.0,
+        "tiempo_estimado_min": 420,
+        "superficie": "mixto",
+        "color": "#8B5A2B",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=73",
+        "url_tour_360": "",
+        "tipo_uso": ["senderismo", "cicloturismo", "MTB"],
+        "perfil_elevacion": "variado"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.130, 38.000],
+          [-1.180, 38.020],
+          [-1.230, 38.040],
+          [-1.280, 38.060],
+          [-1.330, 38.080],
+          [-1.380, 38.100],
+          [-1.430, 38.120],
+          [-1.480, 38.140],
+          [-1.530, 38.160],
+          [-1.580, 38.180]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_ricote",
+        "nombre": "Vía Verde del Valle de Ricote",
+        "descripcion_corta": "Paisaje de huerta tradicional morisco junto al río Segura.",
+        "dificultad": "fácil",
+        "distancia_km": 8.2,
+        "tiempo_estimado_min": 100,
+        "superficie": "asfalto",
+        "color": "#9C6B98",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=128",
+        "url_tour_360": "",
+        "tipo_uso": ["senderismo", "cicloturismo", "accesible"],
+        "perfil_elevacion": "suave"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.380, 38.140],
+          [-1.375, 38.145],
+          [-1.370, 38.150],
+          [-1.365, 38.155],
+          [-1.360, 38.160],
+          [-1.355, 38.165],
+          [-1.350, 38.170]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_totana",
+        "nombre": "Vía Verde de Totana",
+        "descripcion_corta": "Conexión urbana con vestigios industriales y acceso a Sierra Espuña.",
+        "dificultad": "fácil",
+        "distancia_km": 5.5,
+        "tiempo_estimado_min": 70,
+        "superficie": "asfalto",
+        "color": "#C17A53",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=129",
+        "url_tour_360": "",
+        "tipo_uso": ["senderismo", "cicloturismo", "familiar"],
+        "perfil_elevacion": "suave"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.500, 37.770],
+          [-1.505, 37.775],
+          [-1.510, 37.780],
+          [-1.515, 37.785],
+          [-1.520, 37.790],
+          [-1.525, 37.795]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_caravaca",
+        "nombre": "Vía Verde de Caravaca",
+        "descripcion_corta": "Ruta hacia la ciudad santa con patrimonio religioso y natural.",
+        "dificultad": "media",
+        "distancia_km": 18.5,
+        "tiempo_estimado_min": 210,
+        "superficie": "mixto",
+        "color": "#5B7C99",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=130",
+        "url_tour_360": "",
+        "tipo_uso": ["senderismo", "cicloturismo", "peregrino"],
+        "perfil_elevacion": "moderado"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.800, 38.090],
+          [-1.810, 38.095],
+          [-1.820, 38.100],
+          [-1.830, 38.105],
+          [-1.840, 38.110],
+          [-1.850, 38.115],
+          [-1.860, 38.120]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_ruta": "vv_aguilas",
+        "nombre": "Vía Verde de Águilas",
+        "descripcion_corta": "Ruta costera con calas vírgenes y patrimonio minero costero.",
+        "dificultad": "fácil",
+        "distancia_km": 6.8,
+        "tiempo_estimado_min": 85,
+        "superficie": "asfalto",
+        "color": "#E6A855",
+        "url_info": "https://viasverdes.com/itinerarios/itinerario.asp?id=131",
+        "url_tour_360": "",
+        "tipo_uso": ["senderismo", "cicloturismo", "playa"],
+        "perfil_elevacion": "suave"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-1.580, 37.405],
+          [-1.575, 37.410],
+          [-1.570, 37.415],
+          [-1.565, 37.420],
+          [-1.560, 37.425],
+          [-1.555, 37.430]
+        ]
+      }
+    }
+  ]
+}

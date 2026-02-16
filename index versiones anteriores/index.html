@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8B5A2B">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Vías Verdes de Murcia | Mapa Interactivo con Tours 360°</title>
+
+    <!-- MapLibre GL JS (GRATIS - No requiere token) -->
+    <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="data.js"></script>
+    <script src="pois.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        murcia: {
+                            DEFAULT: '#8B5A2B',
+                            light: '#A67B5B',
+                            dark: '#6B4226',
+                            accent: '#C17A53',
+                            glow: '#D4A574'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES (THEME) ==================== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-sidebar: #ffffff;
+            --bg-header: linear-gradient(to right, #8B5A2B, #6B4226);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: rgba(139, 90, 43, 0.15);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --input-text: #6B4226;
+            --modal-bg: #ffffff;
+            --modal-overlay: rgba(0, 0, 0, 0.4);
+            --stat-bg: #f8fafc;
+            --stat-border: #f1f5f9;
+            --chart-bg: #fdfdfd;
+            --chart-border: #f8fafc;
+            --chart-grid: #f1f5f9;
+            --legend-bg: #f9fafb;
+            --filter-bg: #ffffff;
+            --filter-hover-bg: #fffaf5;
+            --scrollbar-track: #f1f1f1;
+            --scrollbar-thumb: #8B5A2B;
+            --scrollbar-hover: #6B4226;
+            --badge-easy-bg: #dcfce7;
+            --badge-easy-text: #166534;
+            --badge-medium-bg: #fef3c7;
+            --badge-medium-text: #92400e;
+            --badge-hard-bg: #fee2e2;
+            --badge-hard-text: #991b1b;
+            --attribution-bg: rgba(255, 255, 255, 0.8);
+            --attribution-text: #6b7280;
+            --btn-secondary-bg: #f3f4f6;
+            --btn-secondary-text: #374151;
+            --btn-secondary-hover: #e5e7eb;
+            --loader-from: #8B5A2B;
+            --loader-to: #6B4226;
+        }
+
+        body.dark {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-sidebar: #0f172a;
+            --bg-header: linear-gradient(to right, #6B4226, #4a2e1a);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --card-hover-shadow: rgba(139, 90, 43, 0.3);
+            --input-bg: rgba(30, 41, 59, 0.9);
+            --input-text: #e2e8f0;
+            --modal-bg: #1e293b;
+            --modal-overlay: rgba(0, 0, 0, 0.6);
+            --stat-bg: #0f172a;
+            --stat-border: #334155;
+            --chart-bg: #0f172a;
+            --chart-border: #334155;
+            --chart-grid: #334155;
+            --legend-bg: #1e293b;
+            --filter-bg: #1e293b;
+            --filter-hover-bg: #334155;
+            --scrollbar-track: #1e293b;
+            --scrollbar-thumb: #A67B5B;
+            --scrollbar-hover: #8B5A2B;
+            --badge-easy-bg: #064e3b;
+            --badge-easy-text: #6ee7b7;
+            --badge-medium-bg: #78350f;
+            --badge-medium-text: #fcd34d;
+            --badge-hard-bg: #7f1d1d;
+            --badge-hard-text: #fca5a5;
+            --attribution-bg: rgba(15, 23, 42, 0.8);
+            --attribution-text: #64748b;
+            --btn-secondary-bg: #334155;
+            --btn-secondary-text: #e2e8f0;
+            --btn-secondary-hover: #475569;
+            --loader-from: #6B4226;
+            --loader-to: #4a2e1a;
+        }
+
+        /* ==================== BASE STYLES ==================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-hover);
+        }
+
+        /* Route Cards */
+        .route-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px var(--card-shadow);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .route-card:hover {
+            box-shadow: 0 4px 16px var(--card-hover-shadow);
+            border-color: #8B5A2B;
+            transform: translateY(-2px);
+        }
+
+        /* POI Icons */
+        .poi-mirador {
+            background: linear-gradient(135deg, #4a90a4, #3d7a8c);
+        }
+
+        .poi-tunel {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .poi-estacion {
+            background: linear-gradient(135deg, #8B5A2B, #6B4226);
+        }
+
+        .poi-patrimonio {
+            background: linear-gradient(135deg, #9c6b98, #7c4f78);
+        }
+
+        .poi-servicio {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .poi-playa {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .poi-puente {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .poi-panel_interpretativo {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+        }
+
+        .poi-punto_conflictivo {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .poi-albergue {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        }
+
+        .poi-area_descanso {
+            background: linear-gradient(135deg, #84cc16, #65a30d);
+        }
+
+        .poi-pueblo {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .badge-easy {
+            background: var(--badge-easy-bg);
+            color: var(--badge-easy-text);
+        }
+
+        .badge-medium {
+            background: var(--badge-medium-bg);
+            color: var(--badge-medium-text);
+        }
+
+        .badge-hard {
+            background: var(--badge-hard-bg);
+            color: var(--badge-hard-text);
+        }
+
+        .badge-tour360 {
+            background: #8B5A2B;
+            color: white;
+        }
+
+        .badge-soon {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: 1px dashed #d1d5db;
+        }
+
+        /* MapLibre Popup */
+        .maplibregl-popup-content {
+            padding: 0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+            overflow: hidden;
+            background: var(--card-bg) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .maplibregl-popup-close-button {
+            font-size: 20px;
+            color: white;
+            right: 8px;
+            top: 8px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Custom Marker */
+        .custom-marker {
+            width: 36px;
+            height: 36px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2.5px solid white;
+        }
+
+        .custom-marker:hover {
+            transform: rotate(-45deg) scale(1.15);
+        }
+
+        .poi-group-items { display: none; }
+        .poi-group-items:not(.hidden) { display: flex; }
+        .poi-chevron-open { transform: rotate(180deg) !important; }
+
+        .custom-marker .marker-tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: rotate(45deg) translate(-30%, 0);
+            background: var(--card-bg, #fff);
+            color: var(--text-primary, #1f2937);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.3;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            border: 1px solid var(--border-color, #e5e7eb);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            z-index: 10;
+        }
+        .custom-marker:hover .marker-tooltip { opacity: 1; }
+
+        .custom-marker svg {
+            transform: rotate(45deg);
+            width: 14px;
+            height: 14px;
+            color: white;
+        }
+
+        /* Modal Premium Styles */
+        .modal-container {
+            position: fixed;
+            inset: 0;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 92vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4);
+            animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.85) translateY(40px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            position: relative;
+            height: 240px;
+        }
+
+        .modal-header-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-header-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 28px;
+            overflow-y: auto;
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--stat-bg);
+            padding: 16px 8px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid var(--stat-border);
+        }
+
+        .stat-card .val {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 6px;
+        }
+
+        .chart-container {
+            margin-bottom: 24px;
+            background: var(--chart-bg);
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid var(--chart-border);
+            position: relative;
+        }
+
+        .chart-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--chart-grid);
+        }
+
+        .chart-stat-item {
+            text-align: center;
+        }
+
+        .chart-stat-val {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .chart-stat-lbl {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Filter Checkbox */
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--filter-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .filter-item:hover {
+            border-color: #8B5A2B;
+            background: var(--filter-hover-bg);
+        }
+
+        .filter-item input {
+            display: none;
+        }
+
+        .filter-item input:checked+span+span {
+            font-weight: 600;
+            color: #8B5A2B;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 1024px) {
+            #sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+                max-height: 60vh;
+                border-radius: 24px 24px 0 0;
+                z-index: 40;
+            }
+        }
+
+        /* ==================== DARK MODE OVERRIDES ==================== */
+        body.dark #sidebar {
+            background: var(--bg-sidebar);
+            border-color: var(--border-color);
+        }
+
+        body.dark #sidebar header {
+            background: var(--bg-header);
+        }
+
+        body.dark #sidebar .border-b {
+            border-color: var(--border-color);
+        }
+
+        body.dark #sidebar .border-t {
+            border-color: var(--border-color);
+        }
+
+        body.dark #legend {
+            background: var(--legend-bg);
+            border-color: var(--border-color);
+        }
+
+        body.dark #searchInput {
+            background: var(--input-bg);
+            color: var(--input-text);
+        }
+
+        body.dark .route-card .text-gray-700,
+        body.dark .route-card [style*="color:#1f2937"],
+        body.dark [style*="color:#1f2937"] {
+            color: var(--text-primary) !important;
+        }
+
+        body.dark [style*="color:#6b7280"] {
+            color: var(--text-secondary) !important;
+        }
+
+        body.dark [style*="color:#4b5563"] {
+            color: var(--text-secondary) !important;
+        }
+
+        body.dark [style*="color:#475569"] {
+            color: var(--text-secondary) !important;
+        }
+
+        body.dark [style*="background:#f3f4f6"],
+        body.dark [style*="background:#e5e7eb"] {
+            background: var(--btn-secondary-bg) !important;
+            color: var(--btn-secondary-text) !important;
+        }
+
+        body.dark [style*="background:#f1f5f9"] {
+            background: var(--stat-bg) !important;
+        }
+
+        body.dark .maplibregl-popup-content [style*="color:#4b5563"] {
+            color: var(--text-secondary) !important;
+        }
+
+        body.dark #poisContent [style*="background:white"] {
+            background: var(--card-bg) !important;
+            border-color: var(--card-border) !important;
+        }
+
+        body.dark #poisContent [style*="color:#1f2937"] {
+            color: var(--text-primary) !important;
+        }
+
+        body.dark #filtersContent h3 {
+            color: var(--text-primary);
+        }
+
+        body.dark #filtersContent .filter-item span {
+            color: var(--text-primary);
+        }
+
+        body.dark .maplibregl-ctrl-group {
+            background: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        body.dark .maplibregl-ctrl-group button {
+            background: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        body.dark .maplibregl-ctrl-group button span {
+            filter: invert(0.8);
+        }
+
+        /* Boton compartir - estilos dark */
+        .share-options-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .share-btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .share-btn-telegram {
+            background: #0088cc;
+            color: white;
+        }
+
+        .share-btn-copy {
+            background: var(--btn-secondary-bg);
+            color: var(--btn-secondary-text);
+        }
+
+        /* Banner instalacion PWA */
+        #installBanner {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body class="font-sans" style="background:var(--bg-primary);">
+
+    <!-- Loading Screen -->
+    <div id="loader"
+        class="fixed inset-0 z-[9999] bg-gradient-to-br from-murcia to-murcia-dark flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="text-white text-center">
+            <img src="assets/images/logo principal vias verdes_1.webp"
+                class="w-64 mx-auto mb-6 object-contain animate-pulse" alt="Vías Verdes Logo">
+            <h1 class="text-3xl font-bold tracking-tight">Vías Verdes</h1>
+            <p class="text-xl opacity-90">Región de Murcia</p>
+        </div>
+        <p class="text-sm text-white/70 mt-6">Cargando mapa interactivo...</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-[380px] shadow-xl z-20 flex flex-col overflow-hidden" style="background:var(--bg-sidebar);">
+
+            <!-- Header -->
+            <header class="bg-gradient-to-r from-murcia to-murcia-dark text-white p-5">
+                <div class="flex items-center gap-3 mb-3">
+                    <img src="assets/images/logo principal vias verdes_1.webp" class="w-40 object-contain"
+                        alt="Vías Verdes">
+                    <div class="flex-1">
+                        <h1 class="text-lg font-bold">Vías Verdes de Murcia</h1>
+                        <p class="text-xs opacity-80">8 rutas · 180+ km · Tours 360°</p>
+                    </div>
+                </div>
+                <!-- Search -->
+                <div class="relative">
+                    <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-murcia-dark/50" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Buscar ruta o punto..."
+                        class="w-full pl-9 pr-4 py-2.5 rounded-lg bg-white/90 text-murcia-dark text-sm placeholder:text-murcia-dark/50 focus:outline-none focus:ring-2 focus:ring-white/50">
+                </div>
+            </header>
+
+            <!-- Tabs -->
+            <div class="flex text-sm" style="border-bottom:1px solid var(--border-color);">
+                <button id="tabRoutes"
+                    class="flex-1 py-2.5 px-3 font-semibold text-murcia border-b-2 border-murcia bg-murcia/5"
+                    onclick="switchTab('routes')">
+                    Rutas
+                </button>
+                <button id="tabPOIs" class="flex-1 py-2.5 px-3 font-semibold hover:text-murcia" style="color:var(--text-muted);"
+                    onclick="switchTab('pois')">
+                    POIs
+                </button>
+                <button id="tabFilters" class="flex-1 py-2.5 px-3 font-semibold hover:text-murcia" style="color:var(--text-muted);"
+                    onclick="switchTab('filters')">
+                    Filtros
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto">
+                <div id="routesContent" class="p-4 space-y-3"></div>
+                <div id="poisContent" class="p-4 space-y-2 hidden"></div>
+                <div id="filtersContent" class="p-4 hidden">
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Rutas</h3>
+                        <div id="routeFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Tipos de POI</h3>
+                        <div id="poiFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Dificultad</h3>
+                        <div id="difficultyFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Distancia</h3>
+                        <div id="distanceFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Tipo de ruta</h3>
+                        <div id="typeFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Estado</h3>
+                        <div id="statusFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Etiquetas</h3>
+                        <div id="tagFilters" class="flex flex-wrap gap-1"></div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="resetFilters()"
+                            class="flex-1 py-2 px-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">
+                            Limpiar
+                        </button>
+                        <button onclick="applyFilters()"
+                            class="flex-1 py-2 px-3 bg-murcia hover:bg-murcia-dark text-white rounded-lg text-sm font-medium">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend (replegable) -->
+            <div id="legend" class="border-t" style="border-color:var(--border-color); background:var(--legend-bg);">
+                <button onclick="toggleLegend()" id="legendToggleBtn" class="w-full flex items-center justify-between px-3 py-2 hover:opacity-80 transition" style="color:var(--text-muted);">
+                    <h4 class="text-[10px] font-semibold uppercase m-0" style="color:var(--text-muted);">Leyenda</h4>
+                    <svg id="legendChevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="legendCollapsible" class="px-3 pb-3 hidden">
+                    <div id="legendItems" class="grid grid-cols-2 gap-1 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-3 flex gap-2" style="border-top:1px solid var(--border-color);">
+                <button onclick="resetView()"
+                    class="flex-1 py-2 px-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1" style="background:var(--btn-secondary-bg); color:var(--btn-secondary-text);">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                    Vista general
+                </button>
+                <button onclick="locateUser()"
+                    class="py-2 px-3 bg-murcia hover:bg-murcia-dark text-white rounded-lg text-xs font-medium flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <circle cx="12" cy="11" r="3" />
+                    </svg>
+                    Mi ubicación
+                </button>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="flex-1 relative">
+            <div id="map" class="w-full h-full"></div>
+
+            <!-- Map Controls (debajo del zoom nativo de MapLibre) -->
+            <div class="absolute right-2 flex flex-col gap-2 z-10" style="top:110px;">
+                <button onclick="toggleSatellite()" id="satelliteBtn"
+                    class="w-[30px] h-[30px] shadow-lg rounded flex items-center justify-center transition" style="background:var(--card-bg); border:1px solid var(--border-color);"
+                    title="Vista satélite">
+                    <svg class="w-4 h-4" style="color:var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+                <button onclick="toggleDarkMode()" id="darkModeBtn"
+                    class="w-[30px] h-[30px] shadow-lg rounded flex items-center justify-center transition" style="background:var(--card-bg); border:1px solid var(--border-color);"
+                    title="Modo oscuro">
+                    <svg id="darkModeIcon" class="w-4 h-4" style="color:var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Attribution -->
+            <div class="absolute bottom-1 right-1 text-[10px] px-2 py-0.5 rounded z-10" style="background:var(--attribution-bg); color:var(--attribution-text);">
+                © OpenStreetMap © CARTO
+            </div>
+        </div>
+    </div>
+
+    <!-- Route Detail Modal -->
+    <div id="routeModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay" onclick="closeRouteModal()"></div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- 360 Tour Modal -->
+    <div id="tour360Modal" class="fixed inset-0 z-[60] hidden bg-black">
+        <button onclick="close360Tour()"
+            class="absolute top-4 right-4 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <iframe id="tour360Frame" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // ==================== VÍAS VERDES DE MURCIA - MAPLIBRE (GRATUITO) ====================
+
+        // ==================== STATE ====================
+        let map, markers = [], isSatellite = false, isDarkMode = false;
+        let activeFilters = {
+            routes: [], poiTypes: [], difficulties: [],
+            distances: ['<10', '10-30', '30-50', '>50'],
+            types: ['lineal', 'circular'],
+            statuses: ['operational', 'coming_soon'],
+            tags: []
+        };
+        let routesData = null;
+        let poisData = null;
+        let deferredInstallPrompt = null;
+
+        // ==================== CONFIG ====================
+        const APP_CONFIG = {
+            center: [-1.35, 37.85],
+            zoom: 8,
+            styles: {
+                light: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+                dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                satellite: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+            }
+        };
+
+        const DISTANCE_RANGES = {
+            '<10': { label: '< 10 km', min: 0, max: 10, color: '#22c55e' },
+            '10-30': { label: '10-30 km', min: 10, max: 30, color: '#f59e0b' },
+            '30-50': { label: '30-50 km', min: 30, max: 50, color: '#f97316' },
+            '>50': { label: '> 50 km', min: 50, max: 9999, color: '#ef4444' }
+        };
+
+        const TYPE_CONFIG = {
+            'lineal': { label: 'Lineal', icon: '→' },
+            'circular': { label: 'Circular', icon: '↻' }
+        };
+
+        const STATUS_CONFIG = {
+            'operational': { label: 'Operativa', color: '#22c55e' },
+            'coming_soon': { label: 'Próximamente', color: '#f59e0b' }
+        };
+
+        const POI_CONFIG = {
+            mirador: { color: '#4a90a4', label: 'Mirador', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>' },
+            tunel: { color: '#6b7280', label: 'Túnel', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M4 20V10a8 8 0 1116 0v10"/></svg>' },
+            estacion: { color: '#8B5A2B', label: 'Estación', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M12 19v2M8 7h8"/></svg>' },
+            patrimonio: { color: '#9c6b98', label: 'Patrimonio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>' },
+            servicio: { color: '#10b981', label: 'Servicio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' },
+            playa: { color: '#f59e0b', label: 'Playa', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>' },
+            puente: { color: '#6366f1', label: 'Puente', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16h16M6 8h12M8 8v8M16 8v8M12 8v8"/></svg>' },
+            panel_interpretativo: { color: '#ec4899', label: 'Panel Info', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4M12 16h.01"/></svg>' },
+            punto_conflictivo: { color: '#ef4444', label: 'Precaución', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>' },
+            albergue: { color: '#0ea5e9', label: 'Albergue', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>' },
+            area_descanso: { color: '#84cc16', label: 'Área Descanso', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>' },
+            pueblo: { color: '#f97316', label: 'Pueblo', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-6h2l-7-7-7 7h2v6"/><path d="M9 21v-4h2v4"/></svg>' }
+        };
+
+        const DIFFICULTY = {
+            'fácil': { color: '#22c55e', label: 'Fácil', class: 'badge-easy' },
+            'media': { color: '#f59e0b', label: 'Media', class: 'badge-medium' },
+            'difícil': { color: '#ef4444', label: 'Difícil', class: 'badge-hard' }
+        };
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Initialize Data safely
+                if (typeof viasVerdes !== 'undefined') {
+                    routesData = {
+                        "type": "FeatureCollection",
+                        "features": viasVerdes.map(v => ({
+                            "type": "Feature",
+                            "properties": {
+                                "id_ruta": v.id,
+                                "nombre": v.name,
+                                "descripcion_corta": v.desc,
+                                "dificultad": v.diff === 'easy' ? 'fácil' : (v.diff === 'medium' ? 'media' : 'difícil'),
+                                "distancia_km": parseFloat(v.km),
+                                "tiempo_estimado_min": parseInt(v.time) * 60 || 120,
+                                "superficie": "mixto",
+                                "color": v.color.main,
+                                "url_tour_360": v.url360 || "",
+                                "perfil_elevacion": v.type || "suave",
+                                "image": v.image || ""
+                            },
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": v.coords || []
+                            }
+                        }))
+                    };
+                } else {
+                    console.error("viasVerdes data not found!");
+                    routesData = { "type": "FeatureCollection", "features": [] };
+                }
+
+                // Generar POIs dinamicamente usando interpolacion de coordenadas sobre las rutas
+                if (typeof generateAllPois === 'function') {
+                    poisData = {
+                        "type": "FeatureCollection",
+                        "features": generateAllPois()
+                    };
+                    console.log('POIs generados:', poisData.features.length);
+                } else {
+                    console.warn('pois.js no cargado, usando POIs vacios');
+                    poisData = { "type": "FeatureCollection", "features": [] };
+                }
+
+                // Aplicar modo oscuro guardado ANTES de iniciar el mapa
+                initDarkMode();
+
+                await initMap();
+                await loadBoundary();
+                initFilters();
+                renderUI();
+
+                // Registrar Service Worker
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('sw.js').then(reg => {
+                        console.log('Service Worker registrado:', reg.scope);
+                    }).catch(err => console.log('SW no disponible:', err));
+                }
+
+                // Escuchar evento de instalacion PWA
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredInstallPrompt = e;
+                    const banner = document.getElementById('installBanner');
+                    if (banner) banner.classList.remove('hidden');
+                });
+            } catch (e) {
+                console.error("Initialization error:", e);
+            } finally {
+                hideLoader();
+            }
+        });
+
+        function getMapStyle() {
+            if (isSatellite) return APP_CONFIG.styles.satellite;
+            if (isDarkMode) return APP_CONFIG.styles.dark;
+            return APP_CONFIG.styles.light;
+        }
+
+        async function initMap() {
+            map = new maplibregl.Map({
+                container: 'map',
+                style: getMapStyle(),
+                center: APP_CONFIG.center,
+                zoom: APP_CONFIG.zoom,
+                attributionControl: false
+            });
+
+            // Wait for map load with a safety timeout
+            await Promise.race([
+                new Promise(r => map.on('load', r)),
+                new Promise(r => setTimeout(r, 5000)) // Force continue after 5 seconds
+            ]);
+
+            map.addControl(new maplibregl.NavigationControl(), 'top-right');
+        }
+
+        async function loadBoundary() {
+            // Si ya tenemos el boundary cacheado, reutilizar sin fetch
+            if (cachedMurciaBoundary) {
+                addBoundaryMask(cachedMurciaBoundary);
+                return;
+            }
+            try {
+                const response = await fetch('https://nominatim.openstreetmap.org/search?q=Región de Murcia,Spain&format=json&polygon_geojson=1&limit=1', { headers: { 'User-Agent': 'ViasVerdesMurcia/1.0' } });
+                const data = await response.json();
+                if (data?.[0]?.geojson) {
+                    const geojson = data[0].geojson;
+                    const boundary = geojson.type === 'Polygon' ? geojson.coordinates[0] : geojson.coordinates.reduce((a, b) => b[0].length > a.length ? b[0] : a, []);
+                    addBoundaryMask(boundary);
+                }
+            } catch (e) { console.log('Using fallback boundary'); }
+        }
+
+        let cachedMurciaBoundary = null;
+
+        function addBoundaryMask(murciaBoundary) {
+            if (!murciaBoundary) return;
+            cachedMurciaBoundary = murciaBoundary;
+            const world = [[-180, 90], [180, 90], [180, -90], [-180, -90], [-180, 90]];
+
+            // Eliminar capas y fuentes existentes si hay (para re-creacion tras cambio de estilo)
+            ['mask-fill', 'murcia-highlight', 'boundary-stroke', 'boundary-glow'].forEach(id => {
+                if (map.getLayer(id)) map.removeLayer(id);
+            });
+            ['mask', 'murcia-region', 'boundary-line'].forEach(id => {
+                if (map.getSource(id)) map.removeSource(id);
+            });
+
+            // Mascara: oscurecer todo fuera de Murcia
+            map.addSource('mask', {
+                type: 'geojson',
+                data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [world, murciaBoundary] } }
+            });
+            map.addLayer({
+                id: 'mask-fill', type: 'fill', source: 'mask',
+                paint: { 'fill-color': isDarkMode ? '#000' : '#334155', 'fill-opacity': isDarkMode ? 0.5 : 0.3 }
+            });
+
+            // Highlight: relleno sutil dentro de Murcia
+            map.addSource('murcia-region', {
+                type: 'geojson',
+                data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [murciaBoundary] } }
+            });
+            map.addLayer({
+                id: 'murcia-highlight', type: 'fill', source: 'murcia-region',
+                paint: { 'fill-color': '#8B5A2B', 'fill-opacity': isDarkMode ? 0.12 : 0.06 }
+            });
+
+            // Borde de la region - glow
+            map.addSource('boundary-line', {
+                type: 'geojson',
+                data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [...murciaBoundary, murciaBoundary[0]] } }
+            });
+            map.addLayer({
+                id: 'boundary-glow', type: 'line', source: 'boundary-line',
+                paint: { 'line-color': '#8B5A2B', 'line-width': 6, 'line-opacity': 0.25, 'line-blur': 4 }
+            });
+            map.addLayer({
+                id: 'boundary-stroke', type: 'line', source: 'boundary-line',
+                paint: { 'line-color': '#8B5A2B', 'line-width': 2.5, 'line-opacity': 0.7 }
+            });
+        }
+
+        function initFilters() {
+            activeFilters.routes = routesData.features.map(f => f.properties.id_ruta);
+            activeFilters.poiTypes = Object.keys(POI_CONFIG);
+            activeFilters.difficulties = Object.keys(DIFFICULTY);
+            activeFilters.distances = Object.keys(DISTANCE_RANGES);
+            activeFilters.types = Object.keys(TYPE_CONFIG);
+            activeFilters.statuses = Object.keys(STATUS_CONFIG);
+            // Recopilar todas las etiquetas unicas
+            const allTags = new Set();
+            viasVerdes.forEach(v => { if (v.tags) v.tags.forEach(t => allTags.add(t)); });
+            activeFilters.tags = Array.from(allTags);
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 500);
+        }
+
+        // ==================== RENDER ====================
+        function renderUI() {
+            addRoutesLayer();
+            addPoisLayer();
+            renderRoutesList();
+            renderPOIsList();
+            setupFilters();
+            renderLegend();
+            setupMapContextMenu();
+            console.log('UI rendered. Routes:', routesData.features.length, 'POIs:', poisData.features.length);
+        }
+
+        let routeHandlersBound = false;
+
+        function addRoutesLayer() {
+            // Limpiar capas y fuente existentes (necesario tras setStyle)
+            try {
+                routesData.features.forEach(f => {
+                    const id = f.properties.id_ruta;
+                    if (map.getLayer(`route-${id}`)) map.removeLayer(`route-${id}`);
+                    if (map.getLayer(`route-${id}-casing`)) map.removeLayer(`route-${id}-casing`);
+                });
+                if (map.getSource('routes')) map.removeSource('routes');
+            } catch(e) { /* ignorar si ya no existen */ }
+
+            // Crear fuente y capas desde cero
+            map.addSource('routes', { type: 'geojson', data: routesData });
+
+            // En modo oscuro las lineas se pintan blancas para contraste
+            const lineColor = isDarkMode || isSatellite ? '#ffffff' : null;
+
+            routesData.features.forEach(f => {
+                const id = f.properties.id_ruta;
+                const casingColor = isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.8)';
+                const routeColor = lineColor || f.properties.color;
+
+                map.addLayer({
+                    id: `route-${id}-casing`,
+                    type: 'line',
+                    source: 'routes',
+                    filter: ['==', ['get', 'id_ruta'], id],
+                    paint: { 'line-color': casingColor, 'line-width': 9, 'line-opacity': 0.6 },
+                    layout: { 'line-cap': 'round', 'line-join': 'round' }
+                });
+                map.addLayer({
+                    id: `route-${id}`,
+                    type: 'line',
+                    source: 'routes',
+                    filter: ['==', ['get', 'id_ruta'], id],
+                    paint: { 'line-color': routeColor, 'line-width': isDarkMode ? 4 : 5, 'line-opacity': 1 },
+                    layout: { 'line-cap': 'round', 'line-join': 'round' }
+                });
+            });
+
+            // Solo bind handlers una vez (evita acumulacion)
+            if (!routeHandlersBound) {
+                routeHandlersBound = true;
+                routesData.features.forEach(f => {
+                    const id = f.properties.id_ruta;
+                    map.on('click', `route-${id}`, e => {
+                        const p = e.features[0].properties;
+                        showRoutePopup(p, e.lngLat);
+                    });
+                    map.on('mouseenter', `route-${id}`, () => map.getCanvas().style.cursor = 'pointer');
+                    map.on('mouseleave', `route-${id}`, () => map.getCanvas().style.cursor = '');
+                });
+            }
+        }
+
+        function addPoisLayer() {
+            markers.forEach(m => m.remove());
+            markers = [];
+
+            poisData.features.forEach(f => {
+                const p = f.properties;
+                const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                const el = document.createElement('div');
+                el.className = 'custom-marker';
+                el.style.backgroundColor = cfg.color;
+                el.innerHTML = cfg.svg + `<span class="marker-tooltip">${p.titulo} · ${cfg.label}</span>`;
+                el.dataset.routeId = p.id_ruta;
+                el.dataset.poiType = p.tipo;
+
+                const marker = new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, 0] })
+                    .setLngLat(f.geometry.coordinates)
+                    .addTo(map);
+
+                el.addEventListener('click', () => showPOIPopup(p, f.geometry.coordinates));
+                markers.push(marker);
+            });
+        }
+
+        function showRoutePopup(props, lngLat) {
+            const diff = DIFFICULTY[props.dificultad] || DIFFICULTY['fácil'];
+            const hasTour = props.url_tour_360 && props.url_tour_360.length > 0;
+
+            const html = `
+        <div style="background: linear-gradient(135deg, ${props.color}, ${props.color}cc); padding: 16px; color: white;">
+            <h3 style="margin:0 0 4px; font-size:16px; font-weight:600;">${props.nombre}</h3>
+            <p style="margin:0; font-size:12px; opacity:0.85;">${props.distancia_km} km · ${Math.floor(props.tiempo_estimado_min / 60)}h ${props.tiempo_estimado_min % 60}m</p>
+        </div>
+        <div style="padding: 16px;">
+            <p style="font-size:13px; color:var(--text-secondary); margin:0 0 12px;">${props.descripcion_corta}</p>
+            <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
+                <span class="badge ${diff.class}">${diff.label}</span>
+                <span class="badge" style="background:var(--btn-secondary-bg); color:var(--btn-secondary-text);">${props.superficie}</span>
+                ${hasTour ? '<span class="badge badge-tour360">360°</span>' : ''}
+            </div>
+            <div style="display:flex; gap:8px; margin-bottom:8px;">
+                ${hasTour ? `<button onclick="open360Tour('${props.url_tour_360}')" style="flex:1; padding:10px; background:#8B5A2B; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver Tour 360°</button>` : ''}
+                <button onclick="openRouteModal('${props.id_ruta}')" style="flex:1; padding:10px; background:var(--btn-secondary-bg); color:var(--btn-secondary-text); border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Más info</button>
+            </div>
+            <div class="share-options-container">
+                <button onclick="shareWhatsApp('${props.id_ruta}')" class="share-btn share-btn-whatsapp" style="font-size:11px; padding:7px 10px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.317-.724-6.003-1.952l-.42-.312-2.647.887.887-2.647-.312-.42A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                    WhatsApp
+                </button>
+                <button onclick="shareTelegram('${props.id_ruta}')" class="share-btn share-btn-telegram" style="font-size:11px; padding:7px 10px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.013-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                </button>
+            </div>
+        </div>
+    `;
+
+            new maplibregl.Popup({ closeOnClick: true, maxWidth: '320px' })
+                .setLngLat(lngLat)
+                .setHTML(html)
+                .addTo(map);
+        }
+
+        function showPOIPopup(props, coords) {
+            const cfg = POI_CONFIG[props.tipo] || POI_CONFIG.servicio;
+            const route = routesData.features.find(f => f.properties.id_ruta === props.id_ruta);
+            const routeName = route ? route.properties.nombre : '';
+            const hasTour = props.url_tour && props.url_tour.length > 0;
+
+            const html = `
+        <div style="background: linear-gradient(135deg, ${cfg.color}, ${cfg.color}cc); padding: 16px; color: white;">
+            <h3 style="margin:0 0 4px; font-size:16px; font-weight:600;">${props.titulo}</h3>
+            <p style="margin:0; font-size:12px; opacity:0.85;">${cfg.label} · ${routeName.replace('Vía Verde ', '')}</p>
+        </div>
+        <div style="padding: 16px;">
+            <p style="font-size:13px; color:#4b5563; margin:0 0 12px;">${props.descripcion}</p>
+            ${hasTour ? `<button onclick="open360Tour('${props.url_tour}')" style="width:100%; padding:10px; background:#8B5A2B; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver en 360°</button>` : ''}
+        </div>
+    `;
+
+            new maplibregl.Popup({ closeOnClick: true, maxWidth: '300px' })
+                .setLngLat(coords)
+                .setHTML(html)
+                .addTo(map);
+        }
+
+        // ==================== MODAL ====================
+        function openRouteModal(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route) return;
+
+            const p = route.properties;
+            const diff = DIFFICULTY[p.dificultad] || DIFFICULTY['fácil'];
+            const poisCount = poisData.features.filter(f => f.properties.id_ruta === routeId).length;
+            const rawRoute = viasVerdes.find(v => v.id === routeId);
+            const status = rawRoute ? rawRoute.status : 'operational';
+            const hasTour = status === 'operational' && p.url_tour_360 && p.url_tour_360.length > 0;
+            const isSoon = status === 'coming_soon';
+
+            const html = `
+        <div class="modal-header">
+            <img src="${p.image || 'assets/images/placeholder-route.jpg'}" class="modal-header-img" onerror="this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'">
+            <div class="modal-header-overlay"></div>
+            <button class="modal-close-btn" onclick="closeRouteModal()">×</button>
+            <div style="position:absolute; bottom:20px; left:24px; right:24px;">
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <span class="badge ${diff.class}">${diff.label}</span>
+                    <span class="badge" style="background:rgba(255,255,255,0.2); color:white; backdrop-filter:blur(4px);">${p.superficie}</span>
+                    ${isSoon ? '<span class="badge badge-soon">PRÓXIMAMENTE</span>' : ''}
+                </div>
+                <h2 style="margin:0; font-size:28px; font-weight:800; color:white; text-shadow:0 2px 10px rgba(0,0,0,0.3);">${p.nombre}</h2>
+            </div>
+        </div>
+        
+        <div class="modal-body">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="val">${p.distancia_km}</div>
+                    <div class="label">Km</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">${Math.floor(p.tiempo_estimado_min / 60)}h${p.tiempo_estimado_min % 60}m</div>
+                    <div class="label">Tiempo</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">${p.perfil_elevacion || 'Suave'}</div>
+                    <div class="label">Perfil</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="font-size:13px; font-weight:700; margin-bottom:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Perfil Altimétrico</h3>
+                <div style="height:140px;">
+                    <canvas id="elevationChart"></canvas>
+                </div>
+                <div id="chartStats" class="chart-stats">
+                    <!-- Stats filled by JS -->
+                </div>
+            </div>
+
+            <p style="font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">${p.descripcion_corta}</p>
+
+            <div style="display:flex; gap:12px; margin-bottom:16px;">
+                ${hasTour ? `<button onclick="open360Tour('${p.url_tour_360}')" style="flex:1; padding:16px; background:linear-gradient(135deg, #8B5A2B, #6B4226); color:white; border:none; border-radius:16px; cursor:pointer; font-size:14px; font-weight:700; box-shadow:0 10px 20px -5px rgba(139, 90, 43, 0.4);">Iniciar Tour 360°</button>` : ''}
+                <button onclick="zoomToRoute('${routeId}'); closeRouteModal();" style="flex:1; padding:16px; background:var(--btn-secondary-bg); color:var(--btn-secondary-text); border:none; border-radius:16px; cursor:pointer; font-size:14px; font-weight:700;">Ver en mapa</button>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <h4 style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">Compartir ruta</h4>
+                <div class="share-options-container">
+                    <button onclick="shareWhatsApp('${routeId}')" class="share-btn share-btn-whatsapp">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.317-.724-6.003-1.952l-.42-.312-2.647.887.887-2.647-.312-.42A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                        WhatsApp
+                    </button>
+                    <button onclick="shareTelegram('${routeId}')" class="share-btn share-btn-telegram">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.013-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        Telegram
+                    </button>
+                    <button onclick="shareCopyLink('${routeId}')" class="share-btn share-btn-copy">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                        Copiar
+                    </button>
+                </div>
+            </div>
+
+            ${isSoon ? `<div style="margin-top:12px; padding:12px; background:#fff7ed; border:1px solid #ffedd5; border-radius:12px; font-size:12px; color:#9a3412; text-align:center;">Esta ruta está actualmente en desarrollo. Próximamente disponible.</div>` : ''}
+        </div>
+    `;
+
+            const container = document.getElementById('routeModal');
+            container.innerHTML = `<div class="modal-content">${html}</div>`;
+            container.classList.remove('hidden');
+            container.classList.add('modal-container'); // Correcting class usage
+
+            setTimeout(() => renderElevationChart(routeId), 300);
+        }
+
+        let elevationChart = null;
+        function renderElevationChart(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route || !route.geometry.coordinates.length) return;
+
+            const coords = route.geometry.coordinates;
+            const ctx = document.getElementById('elevationChart');
+            if (!ctx) return;
+
+            if (elevationChart) elevationChart.destroy();
+
+            const step = Math.max(1, Math.floor(coords.length / 100));
+            const dataPuntos = coords.filter((_, i) => i % step === 0);
+
+            let currentDist = 0;
+            const labels = [];
+            const altitudes = [];
+            let maxAlt = -Infinity;
+            let minAlt = Infinity;
+            let totalAscent = 0;
+
+            for (let i = 0; i < dataPuntos.length; i++) {
+                const alt = dataPuntos[i][2] || 0;
+                if (alt > maxAlt) maxAlt = alt;
+                if (alt < minAlt) minAlt = alt;
+
+                if (i > 0) {
+                    const p1 = dataPuntos[i - 1];
+                    const p2 = dataPuntos[i];
+                    const dx = (p2[0] - p1[0]) * 111.32 * Math.cos(p1[1] * Math.PI / 180);
+                    const dy = (p2[1] - p1[1]) * 111.32;
+                    currentDist += Math.sqrt(dx * dx + dy * dy);
+
+                    const diff = alt - (p1[2] || 0);
+                    if (diff > 0) totalAscent += diff;
+                }
+                labels.push(currentDist.toFixed(1) + ' km');
+                altitudes.push(alt);
+            }
+
+            document.getElementById('chartStats').innerHTML = `
+                <div class="chart-stat-item"><div class="chart-stat-val">+${Math.round(totalAscent)}m</div><div class="chart-stat-lbl">Subida</div></div>
+                <div class="chart-stat-item"><div class="chart-stat-val">${Math.round(maxAlt)}m</div><div class="chart-stat-lbl">Máx</div></div>
+                <div class="chart-stat-item"><div class="chart-stat-val">${Math.round(minAlt)}m</div><div class="chart-stat-lbl">Mín</div></div>
+            `;
+
+            elevationChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Altitud',
+                        data: altitudes,
+                        borderColor: '#f97316',
+                        backgroundColor: (context) => {
+                            const chart = context.chart;
+                            const { ctx, chartArea } = chart;
+                            if (!chartArea) return null;
+                            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(249, 115, 22, 0.4)');
+                            gradient.addColorStop(1, 'rgba(249, 115, 22, 0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { display: true, ticks: { font: { size: 10 } }, grid: { borderDash: [5, 5], color: '#f1f5f9' } }
+                    }
+                }
+            });
+        }
+
+        function closeRouteModal() {
+            document.getElementById('routeModal').classList.add('hidden');
+        }
+
+        // ==================== 360 TOUR ====================
+        function open360Tour(url) {
+            if (!url) return;
+            document.getElementById('tour360Frame').src = url;
+            document.getElementById('tour360Modal').classList.remove('hidden');
+        }
+
+        function close360Tour() {
+            document.getElementById('tour360Modal').classList.add('hidden');
+            document.getElementById('tour360Frame').src = '';
+        }
+
+        // ==================== SIDEBAR ====================
+        function renderRoutesList() {
+            const container = document.getElementById('routesContent');
+            const visibleFeatures = routesData.features.filter(f => isRouteVisible(f.properties.id_ruta));
+            container.innerHTML = visibleFeatures.map((f, i) => {
+                const p = f.properties;
+                const diff = DIFFICULTY[p.dificultad] || DIFFICULTY['fácil'];
+                const rawRoute = viasVerdes.find(v => v.id === p.id_ruta);
+                const status = rawRoute ? rawRoute.status : 'operational';
+                const isSoon = status === 'coming_soon';
+                const hasTour = !isSoon && p.url_tour_360 && p.url_tour_360.length > 0;
+                return `
+        <div class="route-card" onclick="openRouteModal('${p.id_ruta}')">
+            <div style="display:flex; gap:12px; margin-bottom:10px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:${p.color}; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; flex-shrink:0;">${rawRoute ? rawRoute.num : (i + 1)}</div>
+                <div style="flex:1; min-width:0;">
+                    <div style="font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:2px;">${p.nombre}</div>
+                    <div style="font-size:12px; color:var(--text-secondary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${p.descripcion_corta}</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
+                <span>${p.distancia_km} km</span>
+                <span>${Math.floor(p.tiempo_estimado_min / 60)}h ${p.tiempo_estimado_min % 60}m</span>
+                <span>${p.perfil_elevacion || 'Suave'}</span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="badge ${diff.class}">${diff.label}</span>
+                <span class="badge" style="background:var(--btn-secondary-bg); color:var(--btn-secondary-text);">${p.superficie}</span>
+                ${hasTour ? '<span class="badge badge-tour360">360°</span>' : ''}
+                ${isSoon ? '<span class="badge badge-soon">PRÓXIMAMENTE</span>' : ''}
+            </div>
+        </div>`;
+            }).join('');
+        }
+
+        function renderPOIsList(filterText) {
+            const container = document.getElementById('poisContent');
+            const grouped = {};
+            routesData.features.forEach(r => {
+                grouped[r.properties.id_ruta] = { route: r, pois: [] };
+            });
+            poisData.features.forEach(f => {
+                const p = f.properties;
+                if (filterText) {
+                    const q = filterText.toLowerCase();
+                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                    if (!p.titulo.toLowerCase().includes(q) && !cfg.label.toLowerCase().includes(q) && !p.descripcion.toLowerCase().includes(q)) return;
+                }
+                if (grouped[p.id_ruta]) grouped[p.id_ruta].pois.push(f);
+            });
+            let html = '';
+            Object.values(grouped).forEach(g => {
+                if (g.pois.length === 0) return;
+                const rp = g.route.properties;
+                const routeShort = rp.nombre.replace('Vía Verde ', '');
+                html += `
+        <div style="margin-bottom:8px;">
+            <div onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.poi-chevron').classList.toggle('poi-chevron-open')" style="display:flex; align-items:center; gap:8px; padding:10px 12px; background:linear-gradient(135deg, ${rp.color}22, ${rp.color}11); border:1px solid ${rp.color}44; border-radius:10px; cursor:pointer; user-select:none;">
+                <span style="width:14px; height:4px; border-radius:2px; background:${rp.color}; flex-shrink:0;"></span>
+                <span style="flex:1; font-size:13px; font-weight:700; color:var(--text-primary);">${routeShort}</span>
+                <span style="font-size:11px; color:var(--text-secondary); background:var(--btn-secondary-bg); padding:2px 8px; border-radius:10px;">${g.pois.length}</span>
+                <svg class="poi-chevron" style="width:16px; height:16px; color:var(--text-secondary); transition:transform 0.2s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="poi-group-items hidden" style="flex-direction:column; gap:4px; padding:6px 0 0 18px;">`;
+                g.pois.forEach(f => {
+                    const p = f.properties;
+                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                    html += `
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--card-bg); border-radius:8px; border:1px solid var(--card-border); cursor:pointer;" onclick="flyToPOI(${f.geometry.coordinates[0]}, ${f.geometry.coordinates[1]})">
+                    <div style="width:30px; height:30px; border-radius:7px; background:${cfg.color}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${cfg.svg}</div>
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-size:12px; font-weight:600; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.titulo}</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">${cfg.label}</div>
+                    </div>
+                </div>`;
+                });
+                html += `
+            </div>
+        </div>`;
+            });
+            container.innerHTML = html || '<p style="text-align:center; color:var(--text-secondary); font-size:13px; padding:20px;">No se encontraron puntos de interés</p>';
+        }
+
+        function setupFilters() {
+            document.getElementById('routeFilters').innerHTML = routesData.features.map(f => {
+                const p = f.properties;
+                return `<label class="filter-item"><input type="checkbox" value="${p.id_ruta}" checked onchange="toggleFilter('routes', '${p.id_ruta}')"><span style="width:12px; height:12px; border-radius:50%; background:${p.color};"></span><span style="font-size:13px;">${p.nombre.replace('Vía Verde ', '')}</span></label>`;
+            }).join('');
+
+            document.getElementById('poiFilters').innerHTML = Object.entries(POI_CONFIG).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('poiTypes', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            document.getElementById('difficultyFilters').innerHTML = Object.entries(DIFFICULTY).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('difficulties', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            // Filtros de distancia
+            document.getElementById('distanceFilters').innerHTML = Object.entries(DISTANCE_RANGES).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('distances', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            // Filtros de tipo de ruta
+            document.getElementById('typeFilters').innerHTML = Object.entries(TYPE_CONFIG).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('types', '${k}')"><span style="font-size:16px; line-height:1;">${v.icon}</span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            // Filtros de estado
+            document.getElementById('statusFilters').innerHTML = Object.entries(STATUS_CONFIG).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('statuses', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            // Filtros de etiquetas
+            const allTags = new Set();
+            viasVerdes.forEach(v => { if (v.tags) v.tags.forEach(t => allTags.add(t)); });
+            document.getElementById('tagFilters').innerHTML = Array.from(allTags).map(tag =>
+                `<label class="filter-item" style="padding:6px 10px;"><input type="checkbox" value="${tag}" checked onchange="toggleFilter('tags', '${tag}')"><span style="font-size:12px;">${tag}</span></label>`
+            ).join('');
+        }
+
+        function renderLegend() {
+            document.getElementById('legendItems').innerHTML = routesData.features.map(f => {
+                const p = f.properties;
+                return `<div onclick="zoomToRoute('${p.id_ruta}')" style="display:flex; align-items:center; gap:6px; cursor:pointer; padding:2px 0;"><span style="width:20px; height:3px; border-radius:2px; background:${p.color};"></span><span style="font-size:11px; color:var(--text-secondary);">${p.nombre.replace('Vía Verde ', '')}</span></div>`;
+            }).join('');
+        }
+
+        // ==================== FILTERS ====================
+        function toggleFilter(type, value) {
+            const idx = activeFilters[type].indexOf(value);
+            if (idx > -1) activeFilters[type].splice(idx, 1);
+            else activeFilters[type].push(value);
+            applyFilters();
+        }
+
+        function isRouteVisible(routeId) {
+            const feature = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!feature) return false;
+            const raw = viasVerdes.find(v => v.id === routeId);
+            if (!raw) return false;
+
+            const diff = feature.properties.dificultad;
+            const km = parseFloat(raw.km);
+            const type = raw.type || 'lineal';
+            const status = raw.status || 'operational';
+            const tags = raw.tags || [];
+
+            // Verificar filtro de ruta individual
+            if (!activeFilters.routes.includes(routeId)) return false;
+            // Verificar dificultad
+            if (!activeFilters.difficulties.includes(diff)) return false;
+            // Verificar tipo
+            if (!activeFilters.types.includes(type)) return false;
+            // Verificar estado
+            if (!activeFilters.statuses.includes(status)) return false;
+            // Verificar distancia
+            let distMatch = false;
+            for (const rangeKey of activeFilters.distances) {
+                const range = DISTANCE_RANGES[rangeKey];
+                if (km >= range.min && km < range.max) { distMatch = true; break; }
+            }
+            if (!distMatch) return false;
+            // Verificar etiquetas (al menos una coincida)
+            if (activeFilters.tags.length > 0 && tags.length > 0) {
+                const hasTag = tags.some(t => activeFilters.tags.includes(t));
+                if (!hasTag) return false;
+            }
+            return true;
+        }
+
+        function applyFilters() {
+            routesData.features.forEach(f => {
+                const id = f.properties.id_ruta;
+                const visible = isRouteVisible(id);
+                if (map.getLayer(`route-${id}`)) {
+                    map.setLayoutProperty(`route-${id}`, 'visibility', visible ? 'visible' : 'none');
+                    map.setLayoutProperty(`route-${id}-casing`, 'visibility', visible ? 'visible' : 'none');
+                }
+            });
+
+            markers.forEach(m => {
+                const el = m.getElement();
+                const routeId = el.dataset.routeId;
+                const poiType = el.dataset.poiType;
+                const routeVisible = isRouteVisible(routeId);
+                const poiVisible = activeFilters.poiTypes.includes(poiType);
+                el.style.display = (routeVisible && poiVisible) ? 'flex' : 'none';
+            });
+
+            // Actualizar lista del sidebar
+            renderRoutesList();
+        }
+
+        function resetFilters() {
+            activeFilters.routes = routesData.features.map(f => f.properties.id_ruta);
+            activeFilters.poiTypes = Object.keys(POI_CONFIG);
+            activeFilters.difficulties = Object.keys(DIFFICULTY);
+            activeFilters.distances = Object.keys(DISTANCE_RANGES);
+            activeFilters.types = Object.keys(TYPE_CONFIG);
+            activeFilters.statuses = Object.keys(STATUS_CONFIG);
+            const allTags = new Set();
+            viasVerdes.forEach(v => { if (v.tags) v.tags.forEach(t => allTags.add(t)); });
+            activeFilters.tags = Array.from(allTags);
+            document.querySelectorAll('#filtersContent input[type="checkbox"]').forEach(cb => cb.checked = true);
+            applyFilters();
+        }
+
+        // ==================== NAVIGATION ====================
+        function zoomToRoute(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route) return;
+            const coords = route.geometry.coordinates;
+            const bounds = coords.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]));
+            map.fitBounds(bounds, { padding: 80, duration: 1000 });
+        }
+
+        function flyToPOI(lng, lat) {
+            map.flyTo({ center: [lng, lat], zoom: 15, duration: 1000 });
+        }
+
+        function resetView() {
+            map.flyTo({ center: APP_CONFIG.center, zoom: APP_CONFIG.zoom, duration: 1000 });
+        }
+
+        function locateUser() {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    map.flyTo({ center: [pos.coords.longitude, pos.coords.latitude], zoom: 14, duration: 1000 });
+                    new maplibregl.Marker({ color: '#3b82f6' }).setLngLat([pos.coords.longitude, pos.coords.latitude]).addTo(map);
+                }, err => alert('No se pudo obtener tu ubicación'));
+            }
+        }
+
+        function reloadMapLayers() {
+            try {
+                routeHandlersBound = false;
+                addRoutesLayer();
+                addPoisLayer();
+                loadBoundary();
+                applyFilters();
+            } catch(e) {
+                console.warn('Error recargando capas, reintentando...', e);
+                setTimeout(reloadMapLayers, 500);
+            }
+        }
+
+        function toggleSatellite() {
+            isSatellite = !isSatellite;
+            map.setStyle(getMapStyle());
+            map.once('style.load', reloadMapLayers);
+            document.getElementById('satelliteBtn').classList.toggle('bg-murcia', isSatellite);
+            document.getElementById('satelliteBtn').classList.toggle('text-white', isSatellite);
+        }
+
+        // ==================== TABS ====================
+        function switchTab(tab) {
+            ['Routes', 'POIs', 'Filters'].forEach(t => {
+                const btn = document.getElementById('tab' + t);
+                const content = document.getElementById(t.toLowerCase() + 'Content');
+                const isActive = t.toLowerCase() === tab;
+                btn.classList.toggle('text-murcia', isActive);
+                btn.classList.toggle('border-murcia', isActive);
+                btn.classList.toggle('bg-murcia/5', isActive);
+                btn.classList.toggle('border-b-2', isActive);
+                if (isActive) {
+                    btn.style.color = '';
+                } else {
+                    btn.style.color = 'var(--text-muted)';
+                }
+                content.classList.toggle('hidden', !isActive);
+            });
+        }
+
+        // ==================== SEARCH ====================
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const q = e.target.value.trim();
+            renderRoutesList();
+            renderPOIsList(q || null);
+        });
+
+        // ==================== LEYENDA REPLEGABLE ====================
+        let legendExpanded = false;
+        function toggleLegend() {
+            legendExpanded = !legendExpanded;
+            const content = document.getElementById('legendCollapsible');
+            const chevron = document.getElementById('legendChevron');
+            if (legendExpanded) {
+                content.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // ==================== KEYBOARD ====================
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeRouteModal(); close360Tour(); }
+        });
+
+        // ==================== MODO OSCURO ====================
+        function initDarkMode() {
+            const saved = localStorage.getItem('darkMode');
+            if (saved === 'true' || (saved === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                isDarkMode = true;
+                document.body.classList.add('dark');
+                updateDarkModeIcon();
+            }
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            updateDarkModeIcon();
+            updateDarkModeButtons();
+
+            // Cambiar estilo del mapa
+            const newStyle = getMapStyle();
+            map.setStyle(newStyle);
+            map.once('style.load', reloadMapLayers);
+        }
+
+        function updateDarkModeIcon() {
+            const icon = document.getElementById('darkModeIcon');
+            if (!icon) return;
+            if (isDarkMode) {
+                // Icono de sol (modo claro)
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />';
+            } else {
+                // Icono de luna (modo oscuro)
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />';
+            }
+        }
+
+        function updateDarkModeButtons() {
+            const darkBtn = document.getElementById('darkModeBtn');
+            const satBtn = document.getElementById('satelliteBtn');
+            if (isDarkMode) {
+                darkBtn.style.background = 'var(--card-bg)';
+                darkBtn.style.color = 'var(--text-primary)';
+                satBtn.style.background = 'var(--card-bg)';
+                satBtn.style.color = 'var(--text-primary)';
+            } else {
+                darkBtn.style.background = '';
+                darkBtn.style.color = '';
+                satBtn.style.background = '';
+                satBtn.style.color = '';
+            }
+        }
+
+        // ==================== COMPARTIR (WHATSAPP / TELEGRAM) ====================
+        function shareWhatsApp(routeId) {
+            const route = viasVerdes.find(v => v.id === routeId);
+            if (!route) return;
+            const text = `${route.name} - ${route.km} km\n${route.location || 'Region de Murcia'}\n${window.location.href}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function shareTelegram(routeId) {
+            const route = viasVerdes.find(v => v.id === routeId);
+            if (!route) return;
+            const text = `${route.name} - ${route.km} km - ${route.location || 'Region de Murcia'}`;
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function shareCopyLink(routeId) {
+            const route = viasVerdes.find(v => v.id === routeId);
+            if (!route) return;
+            const text = `${route.name} - ${route.km} km - ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Vías Verdes de Murcia', text: route.name, url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Enlace copiado al portapapeles');
+                });
+            }
+        }
+
+        function shareLocationWhatsApp(lng, lat) {
+            const url = `https://www.google.com/maps?q=${lat},${lng}`;
+            const text = `Mira esta ubicacion en Vías Verdes de Murcia:\n${url}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function shareLocationTelegram(lng, lat) {
+            const url = `https://www.google.com/maps?q=${lat},${lng}`;
+            const text = `Ubicacion en Vías Verdes de Murcia`;
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Menu contextual en el mapa (clic derecho / pulsacion larga)
+        function setupMapContextMenu() {
+            map.on('contextmenu', (e) => {
+                const lng = e.lngLat.lng.toFixed(5);
+                const lat = e.lngLat.lat.toFixed(5);
+                const html = `
+                    <div style="padding:12px; min-width:180px;">
+                        <p style="font-size:12px; color:var(--text-secondary); margin:0 0 8px;">Coordenadas: ${lat}, ${lng}</p>
+                        <div class="share-options-container">
+                            <button onclick="shareLocationWhatsApp(${lng}, ${lat})" class="share-btn share-btn-whatsapp" style="font-size:12px; padding:8px 10px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.317-.724-6.003-1.952l-.42-.312-2.647.887.887-2.647-.312-.42A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                                WhatsApp
+                            </button>
+                            <button onclick="shareLocationTelegram(${lng}, ${lat})" class="share-btn share-btn-telegram" style="font-size:12px; padding:8px 10px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.013-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                                Telegram
+                            </button>
+                        </div>
+                    </div>`;
+                new maplibregl.Popup({ closeOnClick: true, maxWidth: '250px' })
+                    .setLngLat(e.lngLat)
+                    .setHTML(html)
+                    .addTo(map);
+            });
+        }
+
+        // ==================== PWA ====================
+        function installPWA() {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then((choice) => {
+                if (choice.outcome === 'accepted') {
+                    console.log('App instalada');
+                }
+                deferredInstallPrompt = null;
+                document.getElementById('installBanner').classList.add('hidden');
+            });
+        }
+
+        function dismissInstall() {
+            document.getElementById('installBanner').classList.add('hidden');
+        }
+
+        console.log('Vías Verdes de Murcia - Ready!');
+    </script>
+
+    <!-- Banner de instalacion PWA -->
+    <div id="installBanner" class="hidden fixed bottom-4 left-4 right-4 z-50 rounded-2xl shadow-xl p-4 flex items-center justify-between gap-3" style="background:var(--card-bg); border:1px solid var(--border-color);">
+        <div class="flex items-center gap-3">
+            <img src="assets/images/logo principal vias verdes_1.webp" class="w-20 h-20 rounded-lg object-contain" alt="VV">
+            <div>
+                <p class="font-semibold text-sm" style="color:var(--text-primary);">Instalar Vías Verdes</p>
+                <p class="text-xs" style="color:var(--text-secondary);">Accede sin conexion desde tu movil</p>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="installPWA()" class="px-4 py-2 bg-murcia text-white rounded-lg text-sm font-semibold hover:bg-murcia-dark transition">Instalar</button>
+            <button onclick="dismissInstall()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 transition" style="color:var(--text-secondary);">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>

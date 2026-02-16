@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8B5A2B">
+    <title>Vías Verdes de Murcia | Mapa Interactivo con Tours 360°</title>
+
+    <!-- MapLibre GL JS (GRATIS - No requiere token) -->
+    <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        murcia: {
+                            DEFAULT: '#8B5A2B',
+                            light: '#A67B5B',
+                            dark: '#6B4226',
+                            accent: '#C17A53',
+                            glow: '#D4A574'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==================== BASE STYLES ==================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B5A2B;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6B4226;
+        }
+
+        /* Route Cards */
+        .route-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .route-card:hover {
+            box-shadow: 0 4px 16px rgba(139, 90, 43, 0.15);
+            border-color: #8B5A2B;
+            transform: translateY(-2px);
+        }
+
+        /* POI Icons */
+        .poi-mirador {
+            background: linear-gradient(135deg, #4a90a4, #3d7a8c);
+        }
+
+        .poi-tunel {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .poi-estacion {
+            background: linear-gradient(135deg, #8B5A2B, #6B4226);
+        }
+
+        .poi-patrimonio {
+            background: linear-gradient(135deg, #9c6b98, #7c4f78);
+        }
+
+        .poi-servicio {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .poi-playa {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .poi-puente {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .poi-panel_interpretativo {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+        }
+
+        .poi-punto_conflictivo {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .badge-easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-tour360 {
+            background: #8B5A2B;
+            color: white;
+        }
+
+        .badge-soon {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: 1px dashed #d1d5db;
+        }
+
+        /* MapLibre Popup */
+        .maplibregl-popup-content {
+            padding: 0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+            overflow: hidden;
+        }
+
+        .maplibregl-popup-close-button {
+            font-size: 20px;
+            color: white;
+            right: 8px;
+            top: 8px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Custom Marker */
+        .custom-marker {
+            width: 36px;
+            height: 36px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2.5px solid white;
+        }
+
+        .custom-marker:hover {
+            transform: rotate(-45deg) scale(1.15);
+        }
+
+        .custom-marker svg {
+            transform: rotate(45deg);
+            width: 14px;
+            height: 14px;
+            color: white;
+        }
+
+        /* Modal Premium Styles */
+        .modal-container {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 92vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4);
+            animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.85) translateY(40px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            position: relative;
+            height: 240px;
+        }
+
+        .modal-header-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-header-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 28px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 16px 8px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+        }
+
+        .stat-card .val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 6px;
+        }
+
+        .chart-container {
+            margin-bottom: 24px;
+            background: #fdfdfd;
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid #f8fafc;
+            position: relative;
+        }
+
+        .chart-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .chart-stat-item {
+            text-align: center;
+        }
+
+        .chart-stat-val {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .chart-stat-lbl {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        /* Filter Checkbox */
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .filter-item:hover {
+            border-color: #8B5A2B;
+            background: #fffaf5;
+        }
+
+        .filter-item input {
+            display: none;
+        }
+
+        .filter-item input:checked+span+span {
+            font-weight: 600;
+            color: #8B5A2B;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 1024px) {
+            #sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+                max-height: 60vh;
+                border-radius: 24px 24px 0 0;
+                z-index: 40;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Loading Screen -->
+    <div id="loader"
+        class="fixed inset-0 z-[9999] bg-gradient-to-br from-murcia to-murcia-dark flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="text-white text-center">
+            <img src="assets/images/logo principal vias verdes_1.webp"
+                class="w-32 mx-auto mb-6 object-contain animate-pulse" alt="Vías Verdes Logo">
+            <h1 class="text-3xl font-bold tracking-tight">Vías Verdes</h1>
+            <p class="text-xl opacity-90">Región de Murcia</p>
+        </div>
+        <p class="text-sm text-white/70 mt-6">Cargando mapa interactivo...</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-[380px] bg-white shadow-xl z-20 flex flex-col overflow-hidden">
+
+            <!-- Header -->
+            <header class="bg-gradient-to-r from-murcia to-murcia-dark text-white p-5">
+                <div class="flex items-center gap-3 mb-3">
+                    <img src="assets/images/logo principal vias verdes_1.webp" class="w-20 object-contain"
+                        alt="Vías Verdes">
+                    <div class="flex-1">
+                        <h1 class="text-lg font-bold">Vías Verdes de Murcia</h1>
+                        <p class="text-xs opacity-80">8 rutas · 180+ km · Tours 360°</p>
+                    </div>
+                </div>
+                <!-- Search -->
+                <div class="relative">
+                    <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-murcia-dark/50" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Buscar ruta o punto..."
+                        class="w-full pl-9 pr-4 py-2.5 rounded-lg bg-white/90 text-murcia-dark text-sm placeholder:text-murcia-dark/50 focus:outline-none focus:ring-2 focus:ring-white/50">
+                </div>
+            </header>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 text-sm">
+                <button id="tabRoutes"
+                    class="flex-1 py-2.5 px-3 font-semibold text-murcia border-b-2 border-murcia bg-murcia/5"
+                    onclick="switchTab('routes')">
+                    Rutas
+                </button>
+                <button id="tabPOIs" class="flex-1 py-2.5 px-3 font-semibold text-gray-500 hover:text-murcia"
+                    onclick="switchTab('pois')">
+                    POIs
+                </button>
+                <button id="tabFilters" class="flex-1 py-2.5 px-3 font-semibold text-gray-500 hover:text-murcia"
+                    onclick="switchTab('filters')">
+                    Filtros
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto">
+                <div id="routesContent" class="p-4 space-y-3"></div>
+                <div id="poisContent" class="p-4 space-y-2 hidden"></div>
+                <div id="filtersContent" class="p-4 hidden">
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Rutas</h3>
+                        <div id="routeFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Tipos de POI</h3>
+                        <div id="poiFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="mb-5">
+                        <h3 class="font-semibold text-gray-700 mb-2 text-sm">Dificultad</h3>
+                        <div id="difficultyFilters" class="space-y-1"></div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="resetFilters()"
+                            class="flex-1 py-2 px-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">
+                            Limpiar
+                        </button>
+                        <button onclick="applyFilters()"
+                            class="flex-1 py-2 px-3 bg-murcia hover:bg-murcia-dark text-white rounded-lg text-sm font-medium">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div id="legend" class="border-t border-gray-200 p-3 bg-gray-50">
+                <h4 class="text-[10px] font-semibold text-gray-500 uppercase mb-2">Leyenda</h4>
+                <div id="legendItems" class="grid grid-cols-2 gap-1 text-xs"></div>
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t border-gray-200 p-3 flex gap-2">
+                <button onclick="resetView()"
+                    class="flex-1 py-2 px-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-medium flex items-center justify-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                    Vista general
+                </button>
+                <button onclick="locateUser()"
+                    class="py-2 px-3 bg-murcia hover:bg-murcia-dark text-white rounded-lg text-xs font-medium flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <circle cx="12" cy="11" r="3" />
+                    </svg>
+                    Mi ubicación
+                </button>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="flex-1 relative">
+            <div id="map" class="w-full h-full"></div>
+
+            <!-- Map Controls -->
+            <div class="absolute top-4 right-4 flex flex-col gap-2 z-10">
+                <button onclick="toggleSatellite()" id="satelliteBtn"
+                    class="w-10 h-10 bg-white shadow-lg rounded-lg flex items-center justify-center hover:bg-gray-50 transition"
+                    title="Vista satélite">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Attribution -->
+            <div class="absolute bottom-1 right-1 text-[10px] text-gray-500 bg-white/80 px-2 py-0.5 rounded z-10">
+                © OpenStreetMap © CARTO
+            </div>
+        </div>
+    </div>
+
+    <!-- Route Detail Modal -->
+    <div id="routeModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay" onclick="closeRouteModal()"></div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- 360 Tour Modal -->
+    <div id="tour360Modal" class="fixed inset-0 z-[60] hidden bg-black">
+        <button onclick="close360Tour()"
+            class="absolute top-4 right-4 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <iframe id="tour360Frame" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // ==================== VÍAS VERDES DE MURCIA - MAPLIBRE (GRATUITO) ====================
+
+        // ==================== STATE ====================
+        let map, markers = [], isSatellite = false;
+        let activeFilters = { routes: [], poiTypes: [], difficulties: [] };
+        let routesData = null;
+        let poisData = null;
+
+        // ==================== CONFIG ====================
+        const APP_CONFIG = {
+            center: [-1.35, 37.85],
+            zoom: 8,
+            styles: {
+                light: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+                satellite: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+            }
+        };
+
+        const POI_CONFIG = {
+            mirador: { color: '#4a90a4', label: 'Mirador', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>' },
+            tunel: { color: '#6b7280', label: 'Túnel', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M4 20V10a8 8 0 1116 0v10"/></svg>' },
+            estacion: { color: '#8B5A2B', label: 'Estación', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M12 19v2M8 7h8"/></svg>' },
+            patrimonio: { color: '#9c6b98', label: 'Patrimonio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>' },
+            servicio: { color: '#10b981', label: 'Servicio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' },
+            playa: { color: '#f59e0b', label: 'Playa', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><path d="M12 8v8"/></svg>' },
+            puente: { color: '#6366f1', label: 'Puente', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16h16M6 8h12"/></svg>' },
+            panel_interpretativo: { color: '#ec4899', label: 'Panel Info', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4"/></svg>' },
+            punto_conflictivo: { color: '#ef4444', label: 'Precaución', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>' }
+        };
+
+        const DIFFICULTY = {
+            'fácil': { color: '#22c55e', label: 'Fácil', class: 'badge-easy' },
+            'media': { color: '#f59e0b', label: 'Media', class: 'badge-medium' },
+            'difícil': { color: '#ef4444', label: 'Difícil', class: 'badge-hard' }
+        };
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Initialize Data safely
+                if (typeof viasVerdes !== 'undefined') {
+                    routesData = {
+                        "type": "FeatureCollection",
+                        "features": viasVerdes.map(v => ({
+                            "type": "Feature",
+                            "properties": {
+                                "id_ruta": v.id,
+                                "nombre": v.name,
+                                "descripcion_corta": v.desc,
+                                "dificultad": v.diff === 'easy' ? 'fácil' : (v.diff === 'medium' ? 'media' : 'difícil'),
+                                "distancia_km": parseFloat(v.km),
+                                "tiempo_estimado_min": parseInt(v.time) * 60 || 120,
+                                "superficie": "mixto",
+                                "color": v.color.main,
+                                "url_tour_360": v.url360 || "",
+                                "perfil_elevacion": v.type || "suave"
+                            },
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": v.coords || []
+                            }
+                        }))
+                    };
+                } else {
+                    console.error("viasVerdes data not found!");
+                    routesData = { "type": "FeatureCollection", "features": [] };
+                }
+
+                poisData = {
+                    "type": "FeatureCollection",
+                    "features": [
+                        { "type": "Feature", "properties": { "id": "poi_maz_001", "id_ruta": "vv_mazarron", "orden_ruta": 1, "tipo": "estacion", "titulo": "Antigua Estación de Mazarrón", "descripcion": "Centro de interpretación de la vía verde.", "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567890" }, "geometry": { "type": "Point", "coordinates": [-1.262, 37.598] } },
+                        { "type": "Feature", "properties": { "id": "poi_maz_002", "id_ruta": "vv_mazarron", "orden_ruta": 2, "tipo": "tunel", "titulo": "Túnel de Las Moreras", "descripcion": "Túnel histórico de 120 metros iluminado.", "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567891" }, "geometry": { "type": "Point", "coordinates": [-1.291, 37.582] } },
+                        { "type": "Feature", "properties": { "id": "poi_maz_003", "id_ruta": "vv_mazarron", "orden_ruta": 3, "tipo": "mirador", "titulo": "Mirador del Mediterráneo", "descripcion": "Vistas panorámicas al mar.", "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567892" }, "geometry": { "type": "Point", "coordinates": [-1.305, 37.573] } },
+                        { "type": "Feature", "properties": { "id": "poi_maz_004", "id_ruta": "vv_mazarron", "orden_ruta": 4, "tipo": "patrimonio", "titulo": "Puente de Hierro", "descripcion": "Estructura metálica original del siglo XIX.", "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567893" }, "geometry": { "type": "Point", "coordinates": [-1.320, 37.565] } },
+                        { "type": "Feature", "properties": { "id": "poi_maz_005", "id_ruta": "vv_mazarron", "orden_ruta": 5, "tipo": "servicio", "titulo": "Área de Descanso Bolnuevo", "descripcion": "Zona con bancos, fuente y aparcabicis.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.335, 37.556] } },
+                        { "type": "Feature", "properties": { "id": "poi_alm_001", "id_ruta": "vv_almendricos", "orden_ruta": 1, "tipo": "estacion", "titulo": "Estación de Almendricos", "descripcion": "Punto de inicio, antigua estación minera.", "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678901" }, "geometry": { "type": "Point", "coordinates": [-1.707, 37.548] } },
+                        { "type": "Feature", "properties": { "id": "poi_alm_002", "id_ruta": "vv_almendricos", "orden_ruta": 2, "tipo": "tunel", "titulo": "Túnel de la Sierra", "descripcion": "Túnel de 300m. Llevar linterna.", "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678902" }, "geometry": { "type": "Point", "coordinates": [-1.756, 37.522] } },
+                        { "type": "Feature", "properties": { "id": "poi_alm_003", "id_ruta": "vv_almendricos", "orden_ruta": 3, "tipo": "mirador", "titulo": "Mirador del Calar", "descripcion": "Vistas del paisaje semiárido.", "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678903" }, "geometry": { "type": "Point", "coordinates": [-1.780, 37.509] } },
+                        { "type": "Feature", "properties": { "id": "poi_alm_004", "id_ruta": "vv_almendricos", "orden_ruta": 4, "tipo": "punto_conflictivo", "titulo": "Tramo en Mal Estado", "descripcion": "Precaución: firme deteriorado 200m.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.796, 37.500] } },
+                        { "type": "Feature", "properties": { "id": "poi_cct_001", "id_ruta": "vv_campo_cartagena", "orden_ruta": 1, "tipo": "estacion", "titulo": "Estación de Los Dolores", "descripcion": "Antigua estación del tren bananero.", "url_tour": "https://tourmkr.com/F1klWjpUHD/56789012" }, "geometry": { "type": "Point", "coordinates": [-0.987, 37.605] } },
+                        { "type": "Feature", "properties": { "id": "poi_cct_002", "id_ruta": "vv_campo_cartagena", "orden_ruta": 2, "tipo": "panel_interpretativo", "titulo": "Panel del Tren Bananero", "descripcion": "Historia del famoso tren agrícola.", "url_tour": "https://tourmkr.com/F1klWjpUHD/56789013" }, "geometry": { "type": "Point", "coordinates": [-1.015, 37.620] } },
+                        { "type": "Feature", "properties": { "id": "poi_cct_003", "id_ruta": "vv_campo_cartagena", "orden_ruta": 3, "tipo": "mirador", "titulo": "Mirador de la Huerta", "descripcion": "Panorámica de cultivos tradicionales.", "url_tour": "https://tourmkr.com/F1klWjpUHD/56789014" }, "geometry": { "type": "Point", "coordinates": [-1.045, 37.635] } },
+                        { "type": "Feature", "properties": { "id": "poi_cct_004", "id_ruta": "vv_campo_cartagena", "orden_ruta": 4, "tipo": "servicio", "titulo": "Área de Picnic La Aljorra", "descripcion": "Mesas, fuente y aseos públicos.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.065, 37.645] } },
+                        { "type": "Feature", "properties": { "id": "poi_nor_001", "id_ruta": "vv_noroeste", "orden_ruta": 1, "tipo": "estacion", "titulo": "Estación de Murcia del Carmen", "descripcion": "Punto de inicio urbano.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.130, 38.000] } },
+                        { "type": "Feature", "properties": { "id": "poi_nor_002", "id_ruta": "vv_noroeste", "orden_ruta": 2, "tipo": "tunel", "titulo": "Túnel de la Luz", "descripcion": "450m completamente iluminado.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.330, 38.080] } },
+                        { "type": "Feature", "properties": { "id": "poi_nor_003", "id_ruta": "vv_noroeste", "orden_ruta": 3, "tipo": "mirador", "titulo": "Mirador del Embalse Alfonso XIII", "descripcion": "Vistas impresionantes del embalse.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.530, 38.160] } },
+                        { "type": "Feature", "properties": { "id": "poi_ric_001", "id_ruta": "vv_ricote", "orden_ruta": 1, "tipo": "patrimonio", "titulo": "Valle de Ricote", "descripcion": "Paisaje cultural morisco BIC.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.370, 38.150] } },
+                        { "type": "Feature", "properties": { "id": "poi_tot_001", "id_ruta": "vv_totana", "orden_ruta": 1, "tipo": "servicio", "titulo": "Centro Visitantes Totana", "descripcion": "Info y alquiler de bicis.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.500, 37.770] } },
+                        { "type": "Feature", "properties": { "id": "poi_car_001", "id_ruta": "vv_caravaca", "orden_ruta": 1, "tipo": "patrimonio", "titulo": "Santuario de la Vera Cruz", "descripcion": "Basílica, meta de peregrinos.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.860, 38.120] } },
+                        { "type": "Feature", "properties": { "id": "poi_agu_001", "id_ruta": "vv_aguilas", "orden_ruta": 1, "tipo": "playa", "titulo": "Cala Cocedores", "descripcion": "Cala virgen para refrescarse.", "url_tour": "" }, "geometry": { "type": "Point", "coordinates": [-1.565, 37.420] } }
+                    ]
+                };
+
+                await initMap();
+                await loadBoundary();
+                initFilters();
+                renderUI();
+            } catch (e) {
+                console.error("Initialization error:", e);
+            } finally {
+                hideLoader();
+            }
+        });
+
+        async function initMap() {
+            map = new maplibregl.Map({
+                container: 'map',
+                style: APP_CONFIG.styles.light,
+                center: APP_CONFIG.center,
+                zoom: APP_CONFIG.zoom,
+                attributionControl: false
+            });
+
+            // Wait for map load with a safety timeout
+            await Promise.race([
+                new Promise(r => map.on('load', r)),
+                new Promise(r => setTimeout(r, 5000)) // Force continue after 5 seconds
+            ]);
+
+            map.addControl(new maplibregl.NavigationControl(), 'top-right');
+        }
+
+        async function loadBoundary() {
+            try {
+                const response = await fetch('https://nominatim.openstreetmap.org/search?q=Región de Murcia,Spain&format=json&polygon_geojson=1&limit=1', { headers: { 'User-Agent': 'ViasVerdesMurcia/1.0' } });
+                const data = await response.json();
+                if (data?.[0]?.geojson) {
+                    const geojson = data[0].geojson;
+                    const boundary = geojson.type === 'Polygon' ? geojson.coordinates[0] : geojson.coordinates.reduce((a, b) => b[0].length > a.length ? b[0] : a, []);
+                    addBoundaryMask(boundary);
+                }
+            } catch (e) { console.log('Using fallback boundary'); }
+        }
+
+        function addBoundaryMask(murciaBoundary) {
+            if (!murciaBoundary) return;
+            const world = [[-180, 90], [180, 90], [180, -90], [-180, -90], [-180, 90]];
+            if (!map.getSource('mask')) {
+                map.addSource('mask', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [world, murciaBoundary] } } });
+                map.addLayer({ id: 'mask-fill', type: 'fill', source: 'mask', paint: { 'fill-color': '#000', 'fill-opacity': 0.35 } });
+            }
+            if (!map.getSource('boundary-line')) {
+                map.addSource('boundary-line', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [...murciaBoundary, murciaBoundary[0]] } } });
+                map.addLayer({ id: 'boundary-stroke', type: 'line', source: 'boundary-line', paint: { 'line-color': '#FFFFFF', 'line-width': 2, 'line-opacity': 0.5 } });
+            }
+        }
+
+        function initFilters() {
+            activeFilters.routes = routesData.features.map(f => f.properties.id_ruta);
+            activeFilters.poiTypes = Object.keys(POI_CONFIG);
+            activeFilters.difficulties = Object.keys(DIFFICULTY);
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 500);
+        }
+
+        // ==================== RENDER ====================
+        function renderUI() {
+            addRoutesLayer();
+            addPoisLayer();
+            renderRoutesList();
+            renderPOIsList();
+            setupFilters();
+            renderLegend();
+        }
+
+        function addRoutesLayer() {
+            if (!map.getSource('routes')) {
+                map.addSource('routes', { type: 'geojson', data: routesData });
+            }
+
+            routesData.features.forEach(f => {
+                const id = f.properties.id_ruta;
+                if (!map.getLayer(`route-${id}-casing`)) {
+                    map.addLayer({
+                        id: `route-${id}-casing`,
+                        type: 'line',
+                        source: 'routes',
+                        filter: ['==', ['get', 'id_ruta'], id],
+                        paint: { 'line-color': '#fff', 'line-width': 8, 'line-opacity': 0.8 },
+                        layout: { 'line-cap': 'round', 'line-join': 'round' }
+                    });
+                    map.addLayer({
+                        id: `route-${id}`,
+                        type: 'line',
+                        source: 'routes',
+                        filter: ['==', ['get', 'id_ruta'], id],
+                        paint: { 'line-color': f.properties.color, 'line-width': 5 },
+                        layout: { 'line-cap': 'round', 'line-join': 'round' }
+                    });
+
+                    map.on('click', `route-${id}`, e => {
+                        const p = e.features[0].properties;
+                        showRoutePopup(p, e.lngLat);
+                    });
+                    map.on('mouseenter', `route-${id}`, () => map.getCanvas().style.cursor = 'pointer');
+                    map.on('mouseleave', `route-${id}`, () => map.getCanvas().style.cursor = '');
+                }
+            });
+        }
+
+        function addPoisLayer() {
+            markers.forEach(m => m.remove());
+            markers = [];
+
+            poisData.features.forEach(f => {
+                const p = f.properties;
+                const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                const el = document.createElement('div');
+                el.className = 'custom-marker';
+                el.style.backgroundColor = cfg.color;
+                el.innerHTML = cfg.svg;
+                el.dataset.routeId = p.id_ruta;
+                el.dataset.poiType = p.tipo;
+
+                const marker = new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, 0] })
+                    .setLngLat(f.geometry.coordinates)
+                    .addTo(map);
+
+                el.addEventListener('click', () => showPOIPopup(p, f.geometry.coordinates));
+                markers.push(marker);
+            });
+        }
+
+        function showRoutePopup(props, lngLat) {
+            const diff = DIFFICULTY[props.dificultad] || DIFFICULTY['fácil'];
+            const hasTour = props.url_tour_360 && props.url_tour_360.length > 0;
+
+            const html = `
+        <div style="background: linear-gradient(135deg, ${props.color}, ${props.color}cc); padding: 16px; color: white;">
+            <h3 style="margin:0 0 4px; font-size:16px; font-weight:600;">${props.nombre}</h3>
+            <p style="margin:0; font-size:12px; opacity:0.85;">${props.distancia_km} km · ${Math.floor(props.tiempo_estimado_min / 60)}h ${props.tiempo_estimado_min % 60}m</p>
+        </div>
+        <div style="padding: 16px;">
+            <p style="font-size:13px; color:#4b5563; margin:0 0 12px;">${props.descripcion_corta}</p>
+            <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
+                <span class="badge ${diff.class}">${diff.label}</span>
+                <span class="badge" style="background:#e5e7eb; color:#374151;">${props.superficie}</span>
+                ${hasTour ? '<span class="badge badge-tour360">360°</span>' : ''}
+            </div>
+            <div style="display:flex; gap:8px;">
+                ${hasTour ? `<button onclick="open360Tour('${props.url_tour_360}')" style="flex:1; padding:10px; background:#8B5A2B; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver Tour 360°</button>` : ''}
+                <button onclick="openRouteModal('${props.id_ruta}')" style="flex:1; padding:10px; background:#f3f4f6; color:#374151; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Más info</button>
+            </div>
+        </div>
+    `;
+
+            new maplibregl.Popup({ closeOnClick: true, maxWidth: '320px' })
+                .setLngLat(lngLat)
+                .setHTML(html)
+                .addTo(map);
+        }
+
+        function showPOIPopup(props, coords) {
+            const cfg = POI_CONFIG[props.tipo] || POI_CONFIG.servicio;
+            const route = routesData.features.find(f => f.properties.id_ruta === props.id_ruta);
+            const routeName = route ? route.properties.nombre : '';
+            const hasTour = props.url_tour && props.url_tour.length > 0;
+
+            const html = `
+        <div style="background: linear-gradient(135deg, ${cfg.color}, ${cfg.color}cc); padding: 16px; color: white;">
+            <h3 style="margin:0 0 4px; font-size:16px; font-weight:600;">${props.titulo}</h3>
+            <p style="margin:0; font-size:12px; opacity:0.85;">${cfg.label} · ${routeName.replace('Vía Verde ', '')}</p>
+        </div>
+        <div style="padding: 16px;">
+            <p style="font-size:13px; color:#4b5563; margin:0 0 12px;">${props.descripcion}</p>
+            ${hasTour ? `<button onclick="open360Tour('${props.url_tour}')" style="width:100%; padding:10px; background:#8B5A2B; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver en 360°</button>` : ''}
+        </div>
+    `;
+
+            new maplibregl.Popup({ closeOnClick: true, maxWidth: '300px' })
+                .setLngLat(coords)
+                .setHTML(html)
+                .addTo(map);
+        }
+
+        // ==================== MODAL ====================
+        function openRouteModal(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route) return;
+
+            const p = route.properties;
+            const diff = DIFFICULTY[p.dificultad] || DIFFICULTY['fácil'];
+            const poisCount = poisData.features.filter(f => f.properties.id_ruta === routeId).length;
+            const rawRoute = viasVerdes.find(v => v.id === routeId);
+            const status = rawRoute ? rawRoute.status : 'operational';
+            const hasTour = status === 'operational' && p.url_tour_360 && p.url_tour_360.length > 0;
+            const isSoon = status === 'coming_soon';
+
+            const html = `
+        <div class="modal-header">
+            <img src="${p.image || 'assets/images/placeholder-route.jpg'}" class="modal-header-img" onerror="this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'">
+            <div class="modal-header-overlay"></div>
+            <button class="modal-close-btn" onclick="closeRouteModal()">×</button>
+            <div style="position:absolute; bottom:20px; left:24px; right:24px;">
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <span class="badge ${diff.class}">${diff.label}</span>
+                    <span class="badge" style="background:rgba(255,255,255,0.2); color:white; backdrop-filter:blur(4px);">${p.superficie}</span>
+                    ${isSoon ? '<span class="badge badge-soon">PRÓXIMAMENTE</span>' : ''}
+                </div>
+                <h2 style="margin:0; font-size:28px; font-weight:800; color:white; text-shadow:0 2px 10px rgba(0,0,0,0.3);">${p.nombre}</h2>
+            </div>
+        </div>
+        
+        <div class="modal-body">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="val">${p.distancia_km}</div>
+                    <div class="label">Km</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">${Math.floor(p.tiempo_estimado_min / 60)}h${p.tiempo_estimado_min % 60}m</div>
+                    <div class="label">Tiempo</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">${p.perfil_elevacion || 'Suave'}</div>
+                    <div class="label">Perfil</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="font-size:13px; font-weight:700; margin-bottom:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Perfil Altimétrico</h3>
+                <div style="height:140px;">
+                    <canvas id="elevationChart"></canvas>
+                </div>
+                <div id="chartStats" class="chart-stats">
+                    <!-- Stats filled by JS -->
+                </div>
+            </div>
+
+            <p style="font-size:14px; color:#475569; line-height:1.6; margin-bottom:24px;">${p.descripcion_corta}</p>
+
+            <div style="display:flex; gap:12px;">
+                ${hasTour ? `<button onclick="open360Tour('${p.url_tour_360}')" style="flex:1; padding:16px; background:linear-gradient(135deg, #8B5A2B, #6B4226); color:white; border:none; border-radius:16px; cursor:pointer; font-size:14px; font-weight:700; box-shadow:0 10px 20px -5px rgba(139, 90, 43, 0.4);">Iniciar Tour 360°</button>` : ''}
+                <button onclick="zoomToRoute('${routeId}'); closeRouteModal();" style="flex:1; padding:16px; background:#f1f5f9; color:#475569; border:none; border-radius:16px; cursor:pointer; font-size:14px; font-weight:700;">Ver en mapa</button>
+            </div>
+            ${isSoon ? `<div style="margin-top:12px; padding:12px; background:#fff7ed; border:1px solid #ffedd5; border-radius:12px; font-size:12px; color:#9a3412; text-align:center;">Esta ruta está actualmente en desarrollo. ¡Próximamente disponible!</div>` : ''}
+        </div>
+    `;
+
+            const container = document.getElementById('routeModal');
+            container.innerHTML = `<div class="modal-content">${html}</div>`;
+            container.classList.remove('hidden');
+            container.classList.add('modal-container'); // Correcting class usage
+
+            setTimeout(() => renderElevationChart(routeId), 300);
+        }
+
+        let elevationChart = null;
+        function renderElevationChart(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route || !route.geometry.coordinates.length) return;
+
+            const coords = route.geometry.coordinates;
+            const ctx = document.getElementById('elevationChart');
+            if (!ctx) return;
+
+            if (elevationChart) elevationChart.destroy();
+
+            const step = Math.max(1, Math.floor(coords.length / 100));
+            const dataPuntos = coords.filter((_, i) => i % step === 0);
+
+            let currentDist = 0;
+            const labels = [];
+            const altitudes = [];
+            let maxAlt = -Infinity;
+            let minAlt = Infinity;
+            let totalAscent = 0;
+
+            for (let i = 0; i < dataPuntos.length; i++) {
+                const alt = dataPuntos[i][2] || 0;
+                if (alt > maxAlt) maxAlt = alt;
+                if (alt < minAlt) minAlt = alt;
+
+                if (i > 0) {
+                    const p1 = dataPuntos[i - 1];
+                    const p2 = dataPuntos[i];
+                    const dx = (p2[0] - p1[0]) * 111.32 * Math.cos(p1[1] * Math.PI / 180);
+                    const dy = (p2[1] - p1[1]) * 111.32;
+                    currentDist += Math.sqrt(dx * dx + dy * dy);
+
+                    const diff = alt - (p1[2] || 0);
+                    if (diff > 0) totalAscent += diff;
+                }
+                labels.push(currentDist.toFixed(1) + ' km');
+                altitudes.push(alt);
+            }
+
+            document.getElementById('chartStats').innerHTML = `
+                <div class="chart-stat-item"><div class="chart-stat-val">+${Math.round(totalAscent)}m</div><div class="chart-stat-lbl">Subida</div></div>
+                <div class="chart-stat-item"><div class="chart-stat-val">${Math.round(maxAlt)}m</div><div class="chart-stat-lbl">Máx</div></div>
+                <div class="chart-stat-item"><div class="chart-stat-val">${Math.round(minAlt)}m</div><div class="chart-stat-lbl">Mín</div></div>
+            `;
+
+            elevationChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Altitud',
+                        data: altitudes,
+                        borderColor: '#f97316',
+                        backgroundColor: (context) => {
+                            const chart = context.chart;
+                            const { ctx, chartArea } = chart;
+                            if (!chartArea) return null;
+                            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(249, 115, 22, 0.4)');
+                            gradient.addColorStop(1, 'rgba(249, 115, 22, 0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { display: true, ticks: { font: { size: 10 } }, grid: { borderDash: [5, 5], color: '#f1f5f9' } }
+                    }
+                }
+            });
+        }
+
+        function closeRouteModal() {
+            document.getElementById('routeModal').classList.add('hidden');
+        }
+
+        // ==================== 360 TOUR ====================
+        function open360Tour(url) {
+            if (!url) return;
+            document.getElementById('tour360Frame').src = url;
+            document.getElementById('tour360Modal').classList.remove('hidden');
+        }
+
+        function close360Tour() {
+            document.getElementById('tour360Modal').classList.add('hidden');
+            document.getElementById('tour360Frame').src = '';
+        }
+
+        // ==================== SIDEBAR ====================
+        function renderRoutesList() {
+            const container = document.getElementById('routesContent');
+            container.innerHTML = routesData.features.map((f, i) => {
+                const p = f.properties;
+                const diff = DIFFICULTY[p.dificultad] || DIFFICULTY['fácil'];
+                const rawRoute = viasVerdes.find(v => v.id === p.id_ruta);
+                const status = rawRoute ? rawRoute.status : 'operational';
+                const isSoon = status === 'coming_soon';
+                const hasTour = !isSoon && p.url_tour_360 && p.url_tour_360.length > 0;
+                return `
+        <div class="route-card" onclick="openRouteModal('${p.id_ruta}')">
+            <div style="display:flex; gap:12px; margin-bottom:10px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:${p.color}; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; flex-shrink:0;">${i + 1}</div>
+                <div style="flex:1; min-width:0;">
+                    <div style="font-size:15px; font-weight:600; color:#1f2937; margin-bottom:2px;">${p.nombre}</div>
+                    <div style="font-size:12px; color:#6b7280; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${p.descripcion_corta}</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; font-size:11px; color:#6b7280; margin-bottom:8px;">
+                <span>${p.distancia_km} km</span>
+                <span>${Math.floor(p.tiempo_estimado_min / 60)}h ${p.tiempo_estimado_min % 60}m</span>
+                <span>${p.perfil_elevacion || 'Suave'}</span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="badge ${diff.class}">${diff.label}</span>
+                <span class="badge" style="background:#e5e7eb; color:#374151;">${p.superficie}</span>
+                ${hasTour ? '<span class="badge badge-tour360">360°</span>' : ''}
+                ${isSoon ? '<span class="badge badge-soon">PRÓXIMAMENTE</span>' : ''}
+            </div>
+        </div>`;
+            }).join('');
+        }
+
+        function renderPOIsList() {
+            const container = document.getElementById('poisContent');
+            container.innerHTML = poisData.features.map(f => {
+                const p = f.properties;
+                const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                const route = routesData.features.find(r => r.properties.id_ruta === p.id_ruta);
+                const routeName = route ? route.properties.nombre.replace('Vía Verde ', '') : '';
+                return `
+        <div style="display:flex; align-items:center; gap:12px; padding:10px; background:white; border-radius:10px; border:1px solid #e5e7eb; cursor:pointer;" onclick="flyToPOI(${f.geometry.coordinates[0]}, ${f.geometry.coordinates[1]})">
+            <div class="poi-${p.tipo}" style="width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${cfg.svg}</div>
+            <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:600; color:#1f2937;">${p.titulo}</div>
+                <div style="font-size:11px; color:#8B5A2B;">${routeName} · ${cfg.label}</div>
+            </div>
+        </div>`;
+            }).join('');
+        }
+
+        function setupFilters() {
+            document.getElementById('routeFilters').innerHTML = routesData.features.map(f => {
+                const p = f.properties;
+                return `<label class="filter-item"><input type="checkbox" value="${p.id_ruta}" checked onchange="toggleFilter('routes', '${p.id_ruta}')"><span style="width:12px; height:12px; border-radius:50%; background:${p.color};"></span><span style="font-size:13px;">${p.nombre.replace('Vía Verde ', '')}</span></label>`;
+            }).join('');
+
+            document.getElementById('poiFilters').innerHTML = Object.entries(POI_CONFIG).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('poiTypes', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+
+            document.getElementById('difficultyFilters').innerHTML = Object.entries(DIFFICULTY).map(([k, v]) =>
+                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('difficulties', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
+            ).join('');
+        }
+
+        function renderLegend() {
+            document.getElementById('legendItems').innerHTML = routesData.features.map(f => {
+                const p = f.properties;
+                return `<div onclick="zoomToRoute('${p.id_ruta}')" style="display:flex; align-items:center; gap:6px; cursor:pointer; padding:2px 0;"><span style="width:20px; height:3px; border-radius:2px; background:${p.color};"></span><span style="font-size:11px; color:#4b5563;">${p.nombre.replace('Vía Verde ', '')}</span></div>`;
+            }).join('');
+        }
+
+        // ==================== FILTERS ====================
+        function toggleFilter(type, value) {
+            const idx = activeFilters[type].indexOf(value);
+            if (idx > -1) activeFilters[type].splice(idx, 1);
+            else activeFilters[type].push(value);
+            applyFilters();
+        }
+
+        function applyFilters() {
+            routesData.features.forEach(f => {
+                const id = f.properties.id_ruta;
+                const diff = f.properties.dificultad;
+                const visible = activeFilters.routes.includes(id) && activeFilters.difficulties.includes(diff);
+                if (map.getLayer(`route-${id}`)) {
+                    map.setLayoutProperty(`route-${id}`, 'visibility', visible ? 'visible' : 'none');
+                    map.setLayoutProperty(`route-${id}-casing`, 'visibility', visible ? 'visible' : 'none');
+                }
+            });
+
+            markers.forEach(m => {
+                const el = m.getElement();
+                const routeId = el.dataset.routeId;
+                const poiType = el.dataset.poiType;
+                const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+                const diff = route ? route.properties.dificultad : 'fácil';
+                const visible = activeFilters.routes.includes(routeId) && activeFilters.poiTypes.includes(poiType) && activeFilters.difficulties.includes(diff);
+                el.style.display = visible ? 'flex' : 'none';
+            });
+        }
+
+        function resetFilters() {
+            activeFilters.routes = routesData.features.map(f => f.properties.id_ruta);
+            activeFilters.poiTypes = Object.keys(POI_CONFIG);
+            activeFilters.difficulties = Object.keys(DIFFICULTY);
+            document.querySelectorAll('#filtersContent input[type="checkbox"]').forEach(cb => cb.checked = true);
+            applyFilters();
+        }
+
+        // ==================== NAVIGATION ====================
+        function zoomToRoute(routeId) {
+            const route = routesData.features.find(f => f.properties.id_ruta === routeId);
+            if (!route) return;
+            const coords = route.geometry.coordinates;
+            const bounds = coords.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]));
+            map.fitBounds(bounds, { padding: 80, duration: 1000 });
+        }
+
+        function flyToPOI(lng, lat) {
+            map.flyTo({ center: [lng, lat], zoom: 15, duration: 1000 });
+        }
+
+        function resetView() {
+            map.flyTo({ center: APP_CONFIG.center, zoom: APP_CONFIG.zoom, duration: 1000 });
+        }
+
+        function locateUser() {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    map.flyTo({ center: [pos.coords.longitude, pos.coords.latitude], zoom: 14, duration: 1000 });
+                    new maplibregl.Marker({ color: '#3b82f6' }).setLngLat([pos.coords.longitude, pos.coords.latitude]).addTo(map);
+                }, err => alert('No se pudo obtener tu ubicación'));
+            }
+        }
+
+        function toggleSatellite() {
+            isSatellite = !isSatellite;
+            map.setStyle(isSatellite ? APP_CONFIG.styles.satellite : APP_CONFIG.styles.light);
+            map.once('style.load', () => { addRoutesLayer(); addPoisLayer(); applyFilters(); });
+            document.getElementById('satelliteBtn').classList.toggle('bg-murcia', isSatellite);
+            document.getElementById('satelliteBtn').classList.toggle('text-white', isSatellite);
+        }
+
+        // ==================== TABS ====================
+        function switchTab(tab) {
+            ['Routes', 'POIs', 'Filters'].forEach(t => {
+                const btn = document.getElementById('tab' + t);
+                const content = document.getElementById(t.toLowerCase() + 'Content');
+                const isActive = t.toLowerCase() === tab;
+                btn.classList.toggle('text-murcia', isActive);
+                btn.classList.toggle('border-murcia', isActive);
+                btn.classList.toggle('bg-murcia/5', isActive);
+                btn.classList.toggle('border-b-2', isActive);
+                btn.classList.toggle('text-gray-500', !isActive);
+                content.classList.toggle('hidden', !isActive);
+            });
+        }
+
+        // ==================== SEARCH ====================
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const q = e.target.value.toLowerCase().trim();
+            if (!q) { renderRoutesList(); renderPOIsList(); return; }
+            // Simple filter for demo
+            console.log('Searching:', q);
+        });
+
+        // ==================== KEYBOARD ====================
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeRouteModal(); close360Tour(); }
+        });
+
+        console.log('Vías Verdes de Murcia - Ready!');
+    </script>
+</body>
+
+</html>

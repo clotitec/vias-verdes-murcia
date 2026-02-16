@@ -1,0 +1,823 @@
+/* ==================== iOS 26 LIQUID GLASS DESIGN SYSTEM ==================== */
+/* Complete Redesign — Advanced Glassmorphism, 3D Depth, Fluid Transitions */
+
+/* ==================== RESET & MOBILE OPTIMIZATIONS ==================== */
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* ==================== SCROLLBAR — GLASS ==================== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.subtle-scrollbar::-webkit-scrollbar { width: 4px; }
+.subtle-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.subtle-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(158, 27, 50, 0.2);
+    border-radius: 4px;
+}
+.subtle-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(158, 27, 50, 0.35);
+}
+
+/* ==================== MAP ==================== */
+#map {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+}
+
+.maplibregl-ctrl-attrib { display: none !important; }
+
+.route-popup .maplibregl-popup-content {
+    background: linear-gradient(135deg, rgba(158, 27, 50, 0.92), rgba(122, 21, 40, 0.92));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 16px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.route-popup .maplibregl-popup-tip {
+    border-top-color: rgba(158, 27, 50, 0.92);
+}
+
+/* ==================== LIQUID GLASS CORE ==================== */
+.liquid-glass {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.35) 100%
+    );
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.liquid-glass-dark {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 30, 30, 0.6) 0%,
+        rgba(50, 50, 50, 0.4) 100%
+    );
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Legacy .glass — alias to liquid-glass */
+.glass {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.35) 100%
+    );
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+/* ==================== HEADER — LIQUID GLASS ==================== */
+.header-liquid {
+    background: linear-gradient(
+        180deg,
+        rgba(158, 27, 50, 0.85) 0%,
+        rgba(158, 27, 50, 0.6) 100%
+    );
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(158, 27, 50, 0.2);
+}
+
+.header-liquid img {
+    filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.25));
+}
+
+.header-liquid h1,
+.header-liquid p {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ==================== SEARCH BAR — GLASS ==================== */
+.search-glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-size: 14px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: inherit;
+    width: 100%;
+}
+
+.search-glass::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+}
+
+/* Search inside header (white text variant) */
+.header-liquid .search-glass {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.header-liquid .search-glass::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.header-liquid .search-glass:focus {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.search-glass:focus {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(158, 27, 50, 0.3);
+    box-shadow:
+        0 0 0 3px rgba(158, 27, 50, 0.1),
+        inset 0 1px 4px rgba(0, 0, 0, 0.02);
+    outline: none;
+}
+
+/* ==================== TAB BAR — iOS 26 PILL ==================== */
+.tab-bar-glass {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+    margin: 8px 12px;
+}
+
+.tab-item-glass {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    background: transparent;
+    white-space: nowrap;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-item-glass:hover {
+    color: #666;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.tab-item-glass.active {
+    background: white;
+    color: #9E1B32;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== CARD ITEMS — LIQUID GLASS ==================== */
+.card-item {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 16px;
+    margin: 8px 12px;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.card-item:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.card-item:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Coming Soon Badge */
+.coming-soon-badge {
+    background: linear-gradient(135deg, rgba(119, 30, 46, 0.15), rgba(82, 20, 32, 0.15));
+    color: #771E2E;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(119, 30, 46, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.card-coming-soon { opacity: 0.85; }
+.card-coming-soon:hover { opacity: 1; }
+
+/* ==================== ROUTE NUMBER — 3D DEPTH ==================== */
+.route-number-3d {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px; /* squircle iOS */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    flex-shrink: 0;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        inset 0 2px 4px rgba(255, 255, 255, 0.25),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+    /* 3D depth effect like iOS app icons */
+}
+
+/* ==================== BADGES — GLASS PILLS ==================== */
+.badge-glass {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.badge-difficulty-easy {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.badge-difficulty-medium {
+    background: rgba(245, 158, 11, 0.15);
+    color: #D97706;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.badge-difficulty-hard {
+    background: rgba(239, 68, 68, 0.15);
+    color: #DC2626;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.badge-360 {
+    background: linear-gradient(135deg, rgba(158, 27, 50, 0.15), rgba(196, 58, 84, 0.15));
+    color: #9E1B32;
+    border-color: rgba(158, 27, 50, 0.3);
+}
+
+/* Legacy badge classes — mapped to glass system */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid transparent;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.badge-easy {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.badge-medium {
+    background: rgba(245, 158, 11, 0.15);
+    color: #D97706;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.badge-hard {
+    background: rgba(239, 68, 68, 0.15);
+    color: #DC2626;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.badge-tour360 {
+    background: linear-gradient(135deg, rgba(158, 27, 50, 0.15), rgba(196, 58, 84, 0.15));
+    color: #9E1B32;
+    border-color: rgba(158, 27, 50, 0.3);
+}
+
+/* ==================== POI ICON — LIQUID GLASS ==================== */
+.poi-icon-glass {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 100%
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.poi-icon-glass:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ==================== BOTTOM BAR — FLOATING PILL ==================== */
+.bottom-bar-float {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.75) 0%,
+        rgba(255, 255, 255, 0.5) 100%
+    );
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 100px; /* Pill shape */
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    margin: 8px 12px;
+}
+
+.bottom-bar-float button {
+    border-radius: 100px;
+    min-height: 44px; /* iOS touch target */
+    min-width: 44px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.bottom-bar-float button:active {
+    transform: scale(0.95);
+}
+
+/* ==================== MAP CONTROLS — GLASS ==================== */
+.map-control-glass {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.5) 100%
+    );
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-control-glass:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.map-control-glass.active {
+    background: linear-gradient(135deg, rgba(158, 27, 50, 0.85), rgba(122, 21, 40, 0.85));
+    border-color: rgba(158, 27, 50, 0.4);
+    color: white;
+    box-shadow:
+        0 4px 16px rgba(158, 27, 50, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ==================== DETAIL MODAL — GLASS ==================== */
+.detail-modal-glass {
+    border-radius: 28px 28px 0 0;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.85) 100%
+    );
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Handle bar (pill indicator at top of modal) */
+.modal-handle {
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.15);
+    margin: 8px auto 12px;
+}
+
+/* ==================== MAP MARKERS — GLASS ==================== */
+.map-marker-glass {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.7) 0%,
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 2px solid var(--poi-color, #6B7280);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.map-marker-glass:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== BOTTOM SHEET ==================== */
+.bottom-sheet {
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform;
+    touch-action: none;
+}
+
+.bottom-sheet.dragging { transition: none; }
+
+/* ==================== SAFE AREAS ==================== */
+.pt-safe { padding-top: max(16px, env(safe-area-inset-top)); }
+.pb-safe { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+
+/* ==================== ANIMATIONS ==================== */
+
+/* Spring animation for modals */
+@keyframes springIn {
+    0% { transform: translateY(100%) scale(0.95); opacity: 0; }
+    60% { transform: translateY(-2%) scale(1.01); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Haptic feedback visual */
+@keyframes hapticPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.97); }
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Pulse ring for user location */
+@keyframes pulse-ring {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(158, 27, 50, 0.4);
+    animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Slide up */
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Modal pop spring */
+@keyframes modalPop {
+    from { transform: scale(0.9) translateY(30px); opacity: 0; }
+    60% { transform: scale(1.02) translateY(-3px); opacity: 1; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Fade in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Scale in */
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ==================== TOUCH TARGETS ==================== */
+.touch-target { min-width: 44px; min-height: 44px; }
+
+/* ==================== ELEVATION PROFILE — GLASS ==================== */
+#elevationChart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    cursor: crosshair;
+}
+
+.elevation-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72));
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    padding: 6px 12px;
+    border-radius: 12px;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 100;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.elevation-hover-marker {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: #9E1B32;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 4px rgba(158, 27, 50, 0.2),
+        0 2px 10px rgba(158, 27, 50, 0.5);
+    z-index: 200;
+    pointer-events: none;
+    transition: transform 0.1s ease-out;
+}
+
+/* ==================== DETAIL MODAL TRANSITIONS ==================== */
+#detailModal {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    pointer-events: none;
+}
+
+#detailModal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#detailModal .glass {
+    transform: translateY(40px);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+#detailModal.active .glass {
+    transform: translateY(0);
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.shadow-premium {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.blend-multiply { mix-blend-mode: multiply; }
+
+/* Glass panel utility — generic reusable container */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Glass stat card */
+.glass-stat {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Glass button — primary */
+.btn-glass-primary {
+    background: rgba(158, 27, 50, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 4px 16px rgba(158, 27, 50, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 44px;
+}
+
+.btn-glass-primary:hover {
+    box-shadow:
+        0 8px 24px rgba(158, 27, 50, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-glass-primary:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Glass button — secondary */
+.btn-glass-secondary {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-primary, #1a1a2e);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 44px;
+}
+
+.btn-glass-secondary:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.btn-glass-secondary:active {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
+}
+
+/* ==================== MURCIA GARNET THEME ==================== */
+.bg-murcia {
+    background: linear-gradient(135deg, #9E1B32 0%, #C43A54 100%);
+}
+
+.text-murcia { color: #9E1B32; }
+.border-murcia { border-color: #9E1B32; }
+
+.shadow-murcia {
+    box-shadow: 0 10px 40px -10px rgba(158, 27, 50, 0.4);
+}
+
+.bg-viaverde { background: linear-gradient(135deg, #9E1B32 0%, #C43A54 100%); }
+.text-viaverde { color: #9E1B32; }
+.border-viaverde { border-color: #9E1B32; }
+
+/* Status indicators */
+.status-operational {
+    background: linear-gradient(135deg, #9E1B32 0%, #C43A54 100%);
+}
+
+.status-coming-soon {
+    background: linear-gradient(135deg, #771E2E 0%, #992E3E 100%);
+}
+
+/* ==================== EU FUNDING BANNER ==================== */
+.eu-funding-banner {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ==================== RESPONSIVE MOBILE-FIRST ==================== */
+@media (max-width: 768px) {
+    .card-item {
+        margin: 6px 8px;
+        padding: 14px;
+        border-radius: 18px;
+    }
+
+    .map-control-glass {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+    }
+
+    .bottom-bar-float {
+        padding: 6px 12px;
+        margin: 6px 8px;
+    }
+
+    .bottom-bar-float button {
+        min-height: 40px;
+        font-size: 10px;
+    }
+}

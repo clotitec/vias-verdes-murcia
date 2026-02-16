@@ -1,0 +1,27 @@
+{
+    "name": "Vías Verdes de la Región de Murcia",
+    "short_name": "VV Murcia",
+    "description": "Explora las Vías Verdes de la Región de Murcia. 8 rutas de cicloturismo y senderismo con tours 360°.",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "lang": "es",
+    "categories": ["travel", "navigation", "sports"],
+    "background_color": "#FFFFFF",
+    "theme_color": "#8B5A2B",
+    "icons": [
+        {
+            "src": "assets/images/logo principal vias verdes_1.webp",
+            "sizes": "any",
+            "type": "image/webp",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/logo principal vias verdes de murcia_1.webp",
+            "sizes": "any",
+            "type": "image/webp",
+            "purpose": "maskable"
+        }
+    ]
+}

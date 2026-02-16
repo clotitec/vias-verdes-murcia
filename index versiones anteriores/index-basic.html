@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vías Verdes Murcia">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#8B5A2B">
+    <meta name="description"
+        content="Descubre las Vías Verdes de la Región de Murcia. 8 rutas de cicloturismo y senderismo por antiguos trazados ferroviarios. Recorre el Campo de Cartagena, Mazarrón y más.">
+    <meta property="og:title" content="Vías Verdes de Murcia | Cicloturismo y Senderismo">
+    <meta property="og:description"
+        content="Explora más de 180km de rutas ecológicas en la Región de Murcia. Tours virtuales 360° disponibles.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Vías Verdes de Murcia | Rutas Verdes de Cicloturismo</title>
+    <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        murcia: { DEFAULT: '#8B5A2B', light: '#A67B5B', dark: '#6B4226', accent: '#C17A53', glow: '#D4A574' },
+                        brand: { DEFAULT: '#8B5A2B', light: '#A67B5B', dark: '#6B4226' },
+                        viaverde: { DEFAULT: '#8B5A2B', light: '#A67B5B', dark: '#6B4226' },
+                        coming: { DEFAULT: '#771E2E', light: '#992E3E', dark: '#521420' },
+                        surface: { DEFAULT: '#FFFFFF', secondary: '#F8FAFC', tertiary: '#F1F5F9' },
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px rgba(0,0,0,0.12)',
+                        'float': '0 10px 40px -10px rgba(0,0,0,0.2)',
+                        'sheet': '0 -8px 30px rgba(0,0,0,0.12)'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-surface-secondary text-slate-800">
+    <div id="loader"
+        class="fixed inset-0 z-[9999] bg-gradient-to-br from-brand to-brand-dark flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="text-white text-center">
+            <svg class="w-20 h-20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+            <h1 id="loadingTitle" class="text-2xl font-bold tracking-tight">Vías Verdes</h1>
+            <p id="loadingSubtitle" class="text-lg opacity-90">Región de Murcia</p>
+        </div>
+        <p id="loadingText" class="text-sm text-white/70 mt-6">Cargando cartografía...</p>
+        <div class="mt-4 w-48 h-1 bg-white/20 rounded-full overflow-hidden">
+            <div class="h-full bg-white rounded-full animate-pulse" style="width: 60%"></div>
+        </div>
+    </div>
+    <div id="map"></div>
+    <div
+        class="fixed bottom-1 right-1 z-10 text-[9px] text-slate-400 bg-white/70 px-1.5 py-0.5 rounded pointer-events-none">
+        © OpenStreetMap © CARTO</div>
+
+    <!-- Top Bar Mobile -->
+    <div class="fixed top-0 left-0 right-0 z-40 p-4 pt-safe pointer-events-none lg:hidden">
+        <div class="flex items-center gap-3 pointer-events-auto">
+            <div
+                class="glass shadow-glass rounded-2xl h-12 px-3 flex items-center justify-center shrink-0 touch-target">
+                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                <span id="topBarTitle" class="ml-2 font-semibold text-brand text-sm">VV Murcia</span>
+            </div>
+            <div
+                class="glass shadow-glass rounded-2xl flex-1 h-12 flex items-center px-4 transition-all focus-within:ring-2 focus-within:ring-brand/30">
+                <svg class="w-5 h-5 text-slate-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" id="searchMobile" placeholder="Buscar vía verde..."
+                    class="bg-transparent w-full outline-none text-sm placeholder:text-slate-400">
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Controls -->
+    <div class="fixed top-20 right-4 z-40 flex flex-col gap-2 lg:top-8 lg:right-8">
+        <button onclick="locateUser()"
+            class="glass shadow-float w-11 h-11 rounded-xl flex items-center justify-center text-slate-600 active:scale-95 transition-transform touch-target"
+            aria-label="Mi ubicación">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <circle cx="12" cy="11" r="3" />
+            </svg>
+        </button>
+        <button id="satelliteBtn" onclick="toggleSatellite()"
+            class="glass shadow-float w-11 h-11 rounded-xl flex items-center justify-center text-slate-600 active:scale-95 transition-transform touch-target"
+            aria-label="Vista Satélite">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </button>
+
+        <button onclick="resetView()"
+            class="glass shadow-float w-11 h-11 rounded-xl flex items-center justify-center text-slate-600 active:scale-95 transition-transform touch-target"
+            aria-label="Restablecer vista">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Desktop Sidebar -->
+    <aside id="desktopSidebar"
+        class="hidden lg:flex fixed left-6 top-6 bottom-6 w-[400px] glass shadow-float rounded-3xl z-50 flex-col overflow-hidden">
+    </aside>
+
+    <!-- Mobile Bottom Sheet -->
+    <div id="bottomSheet"
+        class="fixed inset-x-0 bottom-0 z-50 flex flex-col bg-white rounded-t-[28px] shadow-sheet lg:hidden bottom-sheet"
+        style="height: 85vh;"></div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-[60] hidden"></div>
+
+    <!-- 360 Fullscreen -->
+    <div id="fs360" class="fixed inset-0 z-[100] bg-black hidden flex-col"></div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

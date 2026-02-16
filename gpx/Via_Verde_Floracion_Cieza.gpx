@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpx_style="http://www.topografix.com/GPX/gpx_style/0/2" version="1.1" creator="GPSBabel - http://www.gpsbabel.org">
+<metadata>
+    <name>Via_Verde_Floración_Cieza</name>
+    <author>
+        <name>gpx.studio</name>
+        <link href="https://gpx.studio"></link>
+    </author>
+</metadata>
+<trk>
+    <name>Floración Cieza</name>
+    <type>Cycling</type>
+    <trkseg>
+    <trkpt lat="38.283331731" lon="-1.478522688">
+        <ele>228.2</ele>
+    </trkpt>
+    <trkpt lat="38.283588724" lon="-1.479807019">
+        <ele>229.3</ele>
+    </trkpt>
+    <trkpt lat="38.28372097" lon="-1.481152432">
+        <ele>232.6</ele>
+    </trkpt>
+    <trkpt lat="38.283644191" lon="-1.482593462">
+        <ele>236.3</ele>
+    </trkpt>
+    <trkpt lat="38.28344424" lon="-1.484042801">
+        <ele>237.9</ele>
+    </trkpt>
+    <trkpt lat="38.28314967" lon="-1.48574713">
+        <ele>237.5</ele>
+    </trkpt>
+    <trkpt lat="38.282638925" lon="-1.487492324">
+        <ele>232.1</ele>
+    </trkpt>
+    <trkpt lat="38.282004241" lon="-1.488899633">
+        <ele>230.0</ele>
+    </trkpt>
+    <trkpt lat="38.280638758" lon="-1.491382342">
+        <ele>236.4</ele>
+    </trkpt>
+    <trkpt lat="38.277708012" lon="-1.496698773">
+        <ele>241.0</ele>
+    </trkpt>
+    <trkpt lat="38.274426168" lon="-1.502648677">
+        <ele>254.0</ele>
+    </trkpt>
+    <trkpt lat="38.273543327" lon="-1.504268918">
+        <ele>257.7</ele>
+    </trkpt>
+    <trkpt lat="38.27299023" lon="-1.505310796">
+        <ele>259.0</ele>
+    </trkpt>
+    <trkpt lat="38.272528301" lon="-1.506305087">
+        <ele>258.2</ele>
+    </trkpt>
+    <trkpt lat="38.27214877" lon="-1.507364721">
+        <ele>260.8</ele>
+    </trkpt>
+    <trkpt lat="38.271829404" lon="-1.508620229">
+        <ele>261.7</ele>
+    </trkpt>
+    <trkpt lat="38.271612856" lon="-1.509858984">
+        <ele>265.0</ele>
+    </trkpt>
+    <trkpt lat="38.271549464" lon="-1.510920368">
+        <ele>264.7</ele>
+    </trkpt>
+    <trkpt lat="38.271549492" lon="-1.512355576">
+        <ele>263.1</ele>
+    </trkpt>
+    <trkpt lat="38.271659" lon="-1.513807516">
+        <ele>265.1</ele>
+    </trkpt>
+    <trkpt lat="38.272489274" lon="-1.522305485">
+        <ele>268.6</ele>
+    </trkpt>
+    <trkpt lat="38.272672173" lon="-1.524163547">
+        <ele>273.1</ele>
+    </trkpt>
+    <trkpt lat="38.27282946" lon="-1.524961694">
+        <ele>275.0</ele>
+    </trkpt>
+    <trkpt lat="38.272990501" lon="-1.525581018">
+        <ele>275.3</ele>
+    </trkpt>
+    <trkpt lat="38.2732144" lon="-1.526218756">
+        <ele>271.5</ele>
+    </trkpt>
+    <trkpt lat="38.273532698" lon="-1.526856594">
+        <ele>267.1</ele>
+    </trkpt>
+    <trkpt lat="38.274460011" lon="-1.528421759">
+        <ele>258.5</ele>
+    </trkpt>
+    <trkpt lat="38.275494244" lon="-1.530075688">
+        <ele>252.8</ele>
+    </trkpt>
+    <trkpt lat="38.276075621" lon="-1.530952648">
+        <ele>254.8</ele>
+    </trkpt>
+    <trkpt lat="38.276798938" lon="-1.532115069">
+        <ele>259.6</ele>
+    </trkpt>
+    <trkpt lat="38.277233718" lon="-1.532849829">
+        <ele>260.0</ele>
+    </trkpt>
+    <trkpt lat="38.277595565" lon="-1.533599627">
+        <ele>260.4</ele>
+    </trkpt>
+    <trkpt lat="38.277862361" lon="-1.534293449">
+        <ele>260.9</ele>
+    </trkpt>
+    <trkpt lat="38.278089074" lon="-1.535010979">
+        <ele>257.1</ele>
+    </trkpt>
+    <trkpt lat="38.278261805" lon="-1.535759277">
+        <ele>253.4</ele>
+    </trkpt>
+    <trkpt lat="38.278390485" lon="-1.536609948">
+        <ele>253.6</ele>
+    </trkpt>
+    <trkpt lat="38.278456135" lon="-1.537474403">
+        <ele>256.1</ele>
+    </trkpt>
+    <trkpt lat="38.278325563" lon="-1.540442565">
+        <ele>256.6</ele>
+    </trkpt>
+    <trkpt lat="38.278105388" lon="-1.543400172">
+        <ele>261.5</ele>
+    </trkpt>
+    <trkpt lat="38.277632941" lon="-1.549382448">
+        <ele>266.7</ele>
+    </trkpt>
+    <trkpt lat="38.277243671" lon="-1.554896356">
+        <ele>271.4</ele>
+    </trkpt>
+    <trkpt lat="38.276787439" lon="-1.56113053">
+        <ele>279.4</ele>
+    </trkpt>
+    <trkpt lat="38.276741653" lon="-1.561951363">
+        <ele>283.6</ele>
+    </trkpt>
+    <trkpt lat="38.276699977" lon="-1.56283254">
+        <ele>284.8</ele>
+    </trkpt>
+    <trkpt lat="38.276685295" lon="-1.563934716">
+        <ele>284.3</ele>
+    </trkpt>
+    <trkpt lat="38.276665909" lon="-1.565546015">
+        <ele>282.9</ele>
+    </trkpt>
+    <trkpt lat="38.276634219" lon="-1.571149112">
+        <ele>287.4</ele>
+    </trkpt>
+    <trkpt lat="38.27657308" lon="-1.580902452">
+        <ele>295.1</ele>
+    </trkpt>
+    <trkpt lat="38.276721669" lon="-1.583485697">
+        <ele>298.3</ele>
+    </trkpt>
+    </trkseg>
+</trk>
+</gpx>

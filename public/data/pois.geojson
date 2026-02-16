@@ -1,0 +1,423 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_maz_001",
+        "id_ruta": "vv_mazarron",
+        "orden_ruta": 1,
+        "tipo": "estacion",
+        "categoria": "industrial",
+        "titulo": "Antigua Estación de Mazarrón",
+        "descripcion": "Estación del antiguo ferrocarril minero, hoy restaurada como centro de interpretación de la vía verde.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=300",
+        "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567890",
+        "url_mas_info": "https://mazarron.es/turismo/via-verde"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.262, 37.598]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_maz_002",
+        "id_ruta": "vv_mazarron",
+        "orden_ruta": 2,
+        "tipo": "tunel",
+        "categoria": "industrial",
+        "titulo": "Túnel de Las Moreras",
+        "descripcion": "Túnel histórico de 120 metros iluminado y acondicionado para el tránsito seguro.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=300",
+        "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567891",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.283, 37.587]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_maz_003",
+        "id_ruta": "vv_mazarron",
+        "orden_ruta": 3,
+        "tipo": "mirador",
+        "categoria": "naturaleza",
+        "titulo": "Mirador del Mediterráneo",
+        "descripcion": "Punto panorámico con vistas espectaculares al Mar Mediterráneo y la bahía de Mazarrón.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300",
+        "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567892",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.305, 37.573]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_maz_004",
+        "id_ruta": "vv_mazarron",
+        "orden_ruta": 4,
+        "tipo": "patrimonio",
+        "categoria": "historico",
+        "titulo": "Puente de Hierro",
+        "descripcion": "Estructura metálica original del siglo XIX, ejemplo de ingeniería ferroviaria industrial.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=300",
+        "url_tour": "https://tourmkr.com/F1ObKz1iHJ/34567893",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.320, 37.565]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_maz_005",
+        "id_ruta": "vv_mazarron",
+        "orden_ruta": 5,
+        "tipo": "servicio",
+        "categoria": "servicio",
+        "titulo": "Área de Descanso Bolnuevo",
+        "descripcion": "Zona equipada con bancos, fuente y aparcamiento de bicicletas. Cerca de las famosas erosiones.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.335, 37.556]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_alm_001",
+        "id_ruta": "vv_almendricos",
+        "orden_ruta": 1,
+        "tipo": "estacion",
+        "categoria": "industrial",
+        "titulo": "Estación de Almendricos",
+        "descripcion": "Punto de inicio de la vía verde, antigua estación del ferrocarril minero de hierro.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=300",
+        "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678901",
+        "url_mas_info": "https://lorca.es/via-verde-almendricos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.707, 37.548]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_alm_002",
+        "id_ruta": "vv_almendricos",
+        "orden_ruta": 2,
+        "tipo": "tunel",
+        "categoria": "industrial",
+        "titulo": "Túnel de la Sierra",
+        "descripcion": "Espectacular túnel de 300 metros excavado en roca. Llevar linterna recomendado.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300",
+        "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678902",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.740, 37.531]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_alm_003",
+        "id_ruta": "vv_almendricos",
+        "orden_ruta": 3,
+        "tipo": "mirador",
+        "categoria": "naturaleza",
+        "titulo": "Mirador del Calar",
+        "descripcion": "Vistas panorámicas del paisaje semiárido y las antiguas explotaciones mineras.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300",
+        "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678903",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.764, 37.518]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_alm_004",
+        "id_ruta": "vv_almendricos",
+        "orden_ruta": 4,
+        "tipo": "patrimonio",
+        "categoria": "historico",
+        "titulo": "Ruinas de Cargadero Minero",
+        "descripcion": "Vestigios de las instalaciones donde se cargaba el mineral de hierro en los trenes.",
+        "foto_thumb_url": "",
+        "url_tour": "https://tourmkr.com/F1vnWCq1kt/45678904",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.788, 37.504]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_alm_005",
+        "id_ruta": "vv_almendricos",
+        "orden_ruta": 5,
+        "tipo": "punto_conflictivo",
+        "categoria": "seguridad",
+        "titulo": "Tramo en Mal Estado",
+        "descripcion": "Precaución: firme deteriorado en 200m. Apto solo para MTB o a pie.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.796, 37.500]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_cct_001",
+        "id_ruta": "vv_campo_cartagena",
+        "orden_ruta": 1,
+        "tipo": "estacion",
+        "categoria": "industrial",
+        "titulo": "Estación de Los Dolores",
+        "descripcion": "Antigua estación del tren bananero, punto de inicio de la vía verde.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=300",
+        "url_tour": "https://tourmkr.com/F1klWjpUHD/56789012",
+        "url_mas_info": "https://cartagena.es/via-verde"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.987, 37.605]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_cct_002",
+        "id_ruta": "vv_campo_cartagena",
+        "orden_ruta": 2,
+        "tipo": "panel_interpretativo",
+        "categoria": "historico",
+        "titulo": "Panel del Tren Bananero",
+        "descripcion": "Información histórica sobre el famoso tren que transportaba productos agrícolas.",
+        "foto_thumb_url": "",
+        "url_tour": "https://tourmkr.com/F1klWjpUHD/56789013",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.015, 37.620]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_cct_003",
+        "id_ruta": "vv_campo_cartagena",
+        "orden_ruta": 3,
+        "tipo": "mirador",
+        "categoria": "naturaleza",
+        "titulo": "Mirador de la Huerta",
+        "descripcion": "Panorámica de los tradicionales cultivos del Campo de Cartagena.",
+        "foto_thumb_url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300",
+        "url_tour": "https://tourmkr.com/F1klWjpUHD/56789014",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.045, 37.635]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_cct_004",
+        "id_ruta": "vv_campo_cartagena",
+        "orden_ruta": 4,
+        "tipo": "servicio",
+        "categoria": "servicio",
+        "titulo": "Área de Picnic La Aljorra",
+        "descripcion": "Zona sombreada con mesas, fuente y aseos públicos.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.065, 37.645]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_cct_005",
+        "id_ruta": "vv_campo_cartagena",
+        "orden_ruta": 5,
+        "tipo": "puente",
+        "categoria": "industrial",
+        "titulo": "Puente de la Rambla",
+        "descripcion": "Estructura original rehabilitada que cruza la rambla del Albujón.",
+        "foto_thumb_url": "",
+        "url_tour": "https://tourmkr.com/F1klWjpUHD/56789015",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.085, 37.655]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_nor_001",
+        "id_ruta": "vv_noroeste",
+        "orden_ruta": 1,
+        "tipo": "estacion",
+        "categoria": "industrial",
+        "titulo": "Estación de Murcia del Carmen",
+        "descripcion": "Punto de inicio urbano de la vía verde más larga de la región.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.130, 38.000]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_nor_002",
+        "id_ruta": "vv_noroeste",
+        "orden_ruta": 2,
+        "tipo": "tunel",
+        "categoria": "industrial",
+        "titulo": "Túnel de la Luz",
+        "descripcion": "Túnel de 450 metros completamente iluminado y señalizado.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.330, 38.080]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_nor_003",
+        "id_ruta": "vv_noroeste",
+        "orden_ruta": 3,
+        "tipo": "mirador",
+        "categoria": "naturaleza",
+        "titulo": "Mirador del Embalse de Alfonso XIII",
+        "descripcion": "Impresionantes vistas del embalse y el valle del Segura.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.480, 38.140]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_ric_001",
+        "id_ruta": "vv_ricote",
+        "orden_ruta": 1,
+        "tipo": "patrimonio",
+        "categoria": "historico",
+        "titulo": "Valle de Ricote",
+        "descripcion": "Paisaje cultural morisco declarado Bien de Interés Cultural.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.370, 38.150]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_tot_001",
+        "id_ruta": "vv_totana",
+        "orden_ruta": 1,
+        "tipo": "servicio",
+        "categoria": "servicio",
+        "titulo": "Centro de Visitantes Totana",
+        "descripcion": "Información turística y punto de alquiler de bicicletas.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.500, 37.770]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_car_001",
+        "id_ruta": "vv_caravaca",
+        "orden_ruta": 1,
+        "tipo": "patrimonio",
+        "categoria": "historico",
+        "titulo": "Santuario de la Vera Cruz",
+        "descripcion": "Basílica que custodia la Cruz de Caravaca, meta de peregrinos.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.860, 38.120]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_agu_001",
+        "id_ruta": "vv_aguilas",
+        "orden_ruta": 1,
+        "tipo": "playa",
+        "categoria": "naturaleza",
+        "titulo": "Cala Cocedores",
+        "descripcion": "Cala virgen accesible desde la vía verde, ideal para un baño refrescante.",
+        "foto_thumb_url": "",
+        "url_tour": "",
+        "url_mas_info": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.565, 37.420]
+      }
+    }
+  ]
+}
