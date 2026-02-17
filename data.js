@@ -1,7 +1,7 @@
 const CONFIG = {
     center: [-1.13, 37.99],
     zoom: 8,
-    boundaryColor: '#9E1B32'
+    boundaryColor: '#5A9E8F'
 };
 
 const VIA_VERDE_COLORS = [

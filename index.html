@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#9E1B32">
+    <meta name="theme-color" content="#5A9E8F">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -37,11 +37,11 @@
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                     colors: {
                         murcia: {
-                            DEFAULT: '#9E1B32',
-                            light: '#C43A54',
-                            dark: '#7A1528',
-                            accent: '#C43A54',
-                            glow: '#D4626F'
+                            DEFAULT: '#5A9E8F',
+                            light: '#7DBCAD',
+                            dark: '#1E3330',
+                            accent: '#7DBCAD',
+                            glow: '#9ED1C4'
                         }
                     }
                 }
@@ -52,51 +52,51 @@
     <style>
         /* ==================== iOS 26 LIQUID GLASS — CSS CUSTOM PROPERTIES ==================== */
         :root {
-            --bg-primary: #f0f2f5;
-            --bg-secondary: rgba(255, 255, 255, 0.45);
-            --bg-sidebar: rgba(255, 255, 255, 0.72);
-            --bg-header: linear-gradient(135deg, rgba(158, 27, 50, 0.88), rgba(122, 21, 40, 0.92));
-            --text-primary: #1a1a2e;
-            --text-secondary: #555770;
-            --text-muted: #8e90a6;
-            --border-color: rgba(255, 255, 255, 0.45);
+            --bg-primary: #F4F3EE;
+            --bg-secondary: rgba(230, 240, 237, 0.45);
+            --bg-sidebar: rgba(244, 243, 238, 0.82);
+            --bg-header: linear-gradient(135deg, rgba(90, 158, 143, 0.92), rgba(30, 51, 48, 0.95));
+            --text-primary: #2C3E3A;
+            --text-secondary: #607A74;
+            --text-muted: #8EA09B;
+            --border-color: rgba(201, 212, 196, 0.45);
             --card-bg: rgba(255, 255, 255, 0.55);
-            --card-border: rgba(255, 255, 255, 0.5);
+            --card-border: rgba(201, 212, 196, 0.5);
             --card-shadow: rgba(0, 0, 0, 0.06);
-            --card-hover-shadow: rgba(158, 27, 50, 0.18);
+            --card-hover-shadow: rgba(90, 158, 143, 0.18);
             --input-bg: rgba(255, 255, 255, 0.6);
-            --input-text: #7A1528;
-            --modal-bg: rgba(255, 255, 255, 0.82);
-            --modal-overlay: rgba(0, 0, 0, 0.25);
-            --stat-bg: rgba(255, 255, 255, 0.5);
-            --stat-border: rgba(255, 255, 255, 0.6);
-            --chart-bg: rgba(255, 255, 255, 0.45);
-            --chart-border: rgba(255, 255, 255, 0.5);
-            --chart-grid: rgba(0, 0, 0, 0.06);
-            --legend-bg: rgba(255, 255, 255, 0.5);
-            --filter-bg: rgba(255, 255, 255, 0.5);
-            --filter-hover-bg: rgba(158, 27, 50, 0.06);
+            --input-text: #2C3E3A;
+            --modal-bg: rgba(244, 243, 238, 0.88);
+            --modal-overlay: rgba(30, 51, 48, 0.25);
+            --stat-bg: rgba(230, 240, 237, 0.5);
+            --stat-border: rgba(201, 212, 196, 0.6);
+            --chart-bg: rgba(230, 240, 237, 0.45);
+            --chart-border: rgba(201, 212, 196, 0.5);
+            --chart-grid: rgba(44, 62, 58, 0.06);
+            --legend-bg: rgba(230, 240, 237, 0.5);
+            --filter-bg: rgba(230, 240, 237, 0.5);
+            --filter-hover-bg: rgba(90, 158, 143, 0.08);
             --scrollbar-track: transparent;
-            --scrollbar-thumb: rgba(158, 27, 50, 0.25);
-            --scrollbar-hover: rgba(158, 27, 50, 0.4);
+            --scrollbar-thumb: rgba(90, 158, 143, 0.25);
+            --scrollbar-hover: rgba(90, 158, 143, 0.4);
             --badge-easy-bg: rgba(16, 185, 129, 0.15);
             --badge-easy-text: #065f46;
             --badge-medium-bg: rgba(245, 158, 11, 0.15);
             --badge-medium-text: #92400e;
             --badge-hard-bg: rgba(239, 68, 68, 0.15);
             --badge-hard-text: #991b1b;
-            --attribution-bg: rgba(255, 255, 255, 0.6);
-            --attribution-text: #8e90a6;
-            --btn-secondary-bg: rgba(255, 255, 255, 0.5);
-            --btn-secondary-text: #374151;
-            --btn-secondary-hover: rgba(255, 255, 255, 0.7);
-            --loader-from: #9E1B32;
-            --loader-to: #7A1528;
+            --attribution-bg: rgba(244, 243, 238, 0.6);
+            --attribution-text: #8EA09B;
+            --btn-secondary-bg: rgba(230, 240, 237, 0.5);
+            --btn-secondary-text: #2C3E3A;
+            --btn-secondary-hover: rgba(230, 240, 237, 0.7);
+            --loader-from: #5A9E8F;
+            --loader-to: #1E3330;
             --glass-blur: blur(40px) saturate(180%);
             --glass-blur-light: blur(20px) saturate(150%);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.45);
+            --glass-border: 1px solid rgba(201, 212, 196, 0.45);
             --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --glass-shadow: 0 8px 32px rgba(30, 51, 48, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         /* ==================== BASE STYLES ==================== */
@@ -240,7 +240,7 @@
 
         .route-card:hover {
             box-shadow: 0 12px 40px var(--card-hover-shadow), var(--glass-inset);
-            border-color: rgba(158, 27, 50, 0.3);
+            border-color: rgba(90, 158, 143, 0.3);
             transform: translateY(-3px) scale(1.01);
         }
 
@@ -252,7 +252,7 @@
         /* POI Icons */
         .poi-mirador { background: linear-gradient(135deg, #F59E0B, #D97706); }
         .poi-tunel { background: linear-gradient(135deg, #6B7280, #4B5563); }
-        .poi-estacion { background: linear-gradient(135deg, #9E1B32, #7A1528); }
+        .poi-estacion { background: linear-gradient(135deg, #5A9E8F, #1E3330); }
         .poi-patrimonio { background: linear-gradient(135deg, #92400E, #78350F); }
         .poi-servicio { background: linear-gradient(135deg, #0EA5E9, #0284C7); }
         .poi-playa { background: linear-gradient(135deg, #06B6D4, #0891B2); }
@@ -313,28 +313,28 @@
         }
 
         .badge-tour360 {
-            background: linear-gradient(135deg, rgba(158, 27, 50, 0.85), rgba(196, 58, 84, 0.85));
+            background: linear-gradient(135deg, rgba(90, 158, 143, 0.85), rgba(125, 188, 173, 0.85));
             color: white;
             border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 2px 8px rgba(158, 27, 50, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            box-shadow: 0 2px 8px rgba(90, 158, 143, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
         }
 
         /* Tour 360° featured banner in route cards — clean & compact */
         .tour360-card-banner {
             margin-top: 8px;
             padding: 8px 12px;
-            background: linear-gradient(135deg, #9E1B32, #C43A54);
+            background: linear-gradient(135deg, #5A9E8F, #7DBCAD);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(158, 27, 50, 0.2);
+            box-shadow: 0 2px 8px rgba(90, 158, 143, 0.2);
         }
         .tour360-card-banner:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(158, 27, 50, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 6px 20px rgba(90, 158, 143, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
         }
         .tour360-card-banner:active {
             transform: scale(0.98);
@@ -630,8 +630,8 @@
         }
 
         .filter-item:hover {
-            border-color: rgba(158, 27, 50, 0.3);
-            background: rgba(158, 27, 50, 0.06);
+            border-color: rgba(90, 158, 143, 0.3);
+            background: rgba(90, 158, 143, 0.06);
         }
 
         .filter-item input {
@@ -640,7 +640,7 @@
 
         .filter-item input:checked+span+span {
             font-weight: 600;
-            color: #9E1B32;
+            color: #5A9E8F;
         }
 
         /* Responsive Sidebar — Glass Mobile */
@@ -851,7 +851,7 @@
         }
 
         .modal-tab.active {
-            color: #9E1B32;
+            color: #5A9E8F;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -923,7 +923,7 @@
             justify-content: center;
             font-size: 14px;
             font-weight: 800;
-            color: #9E1B32;
+            color: #5A9E8F;
             line-height: 1;
         }
 
@@ -1080,9 +1080,9 @@
         }
 
         .gpx-download-btn:hover {
-            border-color: rgba(158, 27, 50, 0.4);
-            color: #9E1B32;
-            background: rgba(158, 27, 50, 0.06);
+            border-color: rgba(90, 158, 143, 0.4);
+            color: #5A9E8F;
+            background: rgba(90, 158, 143, 0.06);
         }
 
         .gpx-download-btn svg {
@@ -1098,9 +1098,9 @@
         }
 
         .badge-type {
-            background: rgba(158, 27, 50, 0.1);
-            color: #9E1B32;
-            border: 1px solid rgba(158, 27, 50, 0.15);
+            background: rgba(90, 158, 143, 0.1);
+            color: #5A9E8F;
+            border: 1px solid rgba(90, 158, 143, 0.15);
         }
 
         /* Status indicator — Glass */
@@ -1166,13 +1166,13 @@
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 2px solid #9E1B32;
+            border: 2px solid #5A9E8F;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 9px;
             font-weight: 700;
-            color: #7A1528;
+            color: #1E3330;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
             padding: 0 5px;
             white-space: nowrap;
@@ -1253,9 +1253,9 @@
             transform: scale(0.95);
         }
         .map-float-btn.active {
-            background: rgba(158, 27, 50, 0.12);
-            border-color: rgba(158, 27, 50, 0.3);
-            box-shadow: 0 4px 16px rgba(158, 27, 50, 0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+            background: rgba(90, 158, 143, 0.12);
+            border-color: rgba(90, 158, 143, 0.3);
+            box-shadow: 0 4px 16px rgba(90, 158, 143, 0.15), inset 0 1px 0 rgba(255,255,255,0.3);
         }
         .map-float-btn-wrapper {
             position: relative;
@@ -1335,12 +1335,12 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
-        .transport-radius-btn:hover { color: #9E1B32; background: rgba(255,255,255,0.4); }
+        .transport-radius-btn:hover { color: #5A9E8F; background: rgba(255,255,255,0.4); }
         .active-radius {
-            background: rgba(158, 27, 50, 0.88) !important;
+            background: rgba(90, 158, 143, 0.88) !important;
             backdrop-filter: blur(8px);
             color: white !important;
-            box-shadow: 0 2px 8px rgba(158, 27, 50, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            box-shadow: 0 2px 8px rgba(90, 158, 143, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
         }
         .transport-route-group {
             margin-bottom: 10px;
@@ -1492,9 +1492,9 @@
             transition: all 0.25s;
         }
         .transport-map-btn.active {
-            background: rgba(158, 27, 50, 0.88);
-            border-color: rgba(158, 27, 50, 0.5);
-            box-shadow: 0 2px 12px rgba(158, 27, 50, 0.3);
+            background: rgba(90, 158, 143, 0.88);
+            border-color: rgba(90, 158, 143, 0.5);
+            box-shadow: 0 2px 12px rgba(90, 158, 143, 0.3);
         }
         /* Transport Markers — Glass */
         .transport-marker {
@@ -1553,7 +1553,7 @@
             </div>
 
             <!-- Header — Liquid Glass -->
-            <header class="text-white" style="background:linear-gradient(135deg, rgba(158,27,50,0.88), rgba(122,21,40,0.92)); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); box-shadow:inset 0 -1px 0 rgba(255,255,255,0.1), 0 4px 20px rgba(158,27,50,0.2); padding:16px 20px 14px;">
+            <header class="text-white" style="background:linear-gradient(135deg, rgba(90,158,143,0.92), rgba(30,51,48,0.95)); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); box-shadow:inset 0 -1px 0 rgba(255,255,255,0.1), 0 4px 20px rgba(90,158,143,0.2); padding:16px 20px 14px;">
                 <div style="display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:12px;">
                     <img src="assets/images/logo principal vias verdes_1.webp"
                         style="width:100%; max-width:320px; height:auto; object-fit:contain; border-radius:16px; margin-bottom:8px;"
@@ -1624,10 +1624,6 @@
                     <div class="mb-5">
                         <h3 class="font-semibold mb-2 text-sm" data-i18n="filterRouteType" style="color:var(--text-primary);">Tipo de ruta</h3>
                         <div id="typeFilters" class="space-y-1"></div>
-                    </div>
-                    <div class="mb-5">
-                        <h3 class="font-semibold mb-2 text-sm" data-i18n="filterStatus" style="color:var(--text-primary);">Estado</h3>
-                        <div id="statusFilters" class="space-y-1"></div>
                     </div>
                     <div class="mb-5">
                         <h3 class="font-semibold mb-2 text-sm" data-i18n="filterTags" style="color:var(--text-primary);">Etiquetas</h3>
@@ -1763,7 +1759,7 @@
     <div id="infoSideOverlay" class="info-side-overlay" onclick="closeInfoPanel()"></div>
     <div id="infoSidePanel" class="info-side-panel">
         <!-- Header -->
-        <div class="relative shrink-0" style="background: linear-gradient(135deg, #9E1B32, #7A1528);">
+        <div class="relative shrink-0" style="background: linear-gradient(135deg, #5A9E8F, #1E3330);">
             <div class="p-5 pb-4 text-white">
                 <button onclick="closeInfoPanel()" class="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition z-10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -1924,7 +1920,7 @@
                     <div class="flex items-center justify-center gap-3 flex-wrap p-3 bg-slate-50 rounded-xl">
                         <div class="flex flex-col items-center gap-0.5">
                             <div class="w-12 h-12 bg-white rounded-lg shadow-sm border border-slate-100 flex items-center justify-center p-1">
-                                <svg viewBox="0 0 40 40" class="w-full h-full"><rect width="40" height="40" rx="4" fill="#9E1B32" opacity="0.1"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" fill="#9E1B32">REGION</text><text x="20" y="24" text-anchor="middle" font-size="6" font-weight="500" fill="#9E1B32">DE</text><text x="20" y="32" text-anchor="middle" font-size="7" font-weight="700" fill="#9E1B32">MURCIA</text></svg>
+                                <svg viewBox="0 0 40 40" class="w-full h-full"><rect width="40" height="40" rx="4" fill="#5A9E8F" opacity="0.1"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" fill="#5A9E8F">REGION</text><text x="20" y="24" text-anchor="middle" font-size="6" font-weight="500" fill="#5A9E8F">DE</text><text x="20" y="32" text-anchor="middle" font-size="7" font-weight="700" fill="#5A9E8F">MURCIA</text></svg>
                             </div>
                             <span class="text-[7px] text-slate-400 text-center leading-tight font-medium">Región de<br>Murcia</span>
                         </div>
@@ -2265,29 +2261,25 @@
             'circular': { label: 'Circular', icon: '↻' }
         };
 
-        const STATUS_CONFIG = {
-            'operational': { label: 'Operativa', color: '#22c55e' },
-            'coming_soon': { label: 'Próximamente', color: '#f59e0b' }
-        };
+        const STATUS_CONFIG = {};
 
         const POI_CONFIG = {
             mirador: { color: '#F59E0B', label: 'Mirador', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>' },
             tunel: { color: '#6B7280', label: 'Túnel', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M4 20V10a8 8 0 1116 0v10"/></svg>' },
-            estacion: { color: '#9E1B32', label: 'Estación', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M12 19v2M8 7h8"/></svg>' },
+            estacion: { color: '#5A9E8F', label: 'Estación', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M12 19v2M8 7h8"/></svg>' },
             patrimonio: { color: '#92400E', label: 'Patrimonio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>' },
-            servicio: { color: '#0EA5E9', label: 'Servicio', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' },
-            playa: { color: '#06B6D4', label: 'Playa', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>' },
             puente: { color: '#D97706', label: 'Puente', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16h16M6 8h12M8 8v8M16 8v8M12 8v8"/></svg>' },
-            panel_interpretativo: { color: '#3B82F6', label: 'Panel Info', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4M12 16h.01"/></svg>' },
-            punto_conflictivo: { color: '#DC2626', label: 'Precaución', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>' },
             albergue: { color: '#059669', label: 'Albergue', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>' },
+            alojamiento: { color: '#7C3AED', label: 'Alojamiento', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2m-16 0H3M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4v4h4v-4"/></svg>' },
             area_descanso: { color: '#84CC16', label: 'Área Descanso', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>' },
-            pueblo: { color: '#7C3AED', label: 'Pueblo', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-6h2l-7-7-7 7h2v6"/><path d="M9 21v-4h2v4"/></svg>' },
+            pueblo: { color: '#8B5CF6', label: 'Pueblo', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-6h2l-7-7-7 7h2v6"/><path d="M9 21v-4h2v4"/></svg>' },
             restaurante: { color: '#E11D48', label: 'Restaurante', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>' },
             aparcamiento: { color: '#2563EB', label: 'Aparcamiento', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>' },
-            fuente_agua: { color: '#0891B2', label: 'Fuente de Agua', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M8 4l4 4 4-4"/><path d="M6 12a6 6 0 0012 0"/><path d="M6 12H4a8 8 0 0016 0h-2"/></svg>' },
-            camping: { color: '#15803D', label: 'Camping', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><path d="M12 14l-4 8h8l-4-8z"/></svg>' },
-            centro_salud: { color: '#E11D48', label: 'Centro Salud', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>' }
+            centro_salud: { color: '#E11D48', label: 'Centro Salud', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>' },
+            comisaria: { color: '#1E40AF', label: 'Comisaría', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 21V11l3-6 3 6v10M6 21V14h3M15 21V14h3M12 8v1"/><circle cx="12" cy="5" r="1"/></svg>' },
+            farmacia: { color: '#16A34A', label: 'Farmacia', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>' },
+            supermercado: { color: '#EA580C', label: 'Supermercado', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>' },
+            oficina_turismo: { color: '#0891B2', label: 'Of. Turismo', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' }
         };
 
         const DIFFICULTY = {
@@ -2486,7 +2478,7 @@
             });
             map.addLayer({
                 id: 'murcia-highlight', type: 'fill', source: 'murcia-region',
-                paint: { 'fill-color': '#9E1B32', 'fill-opacity': 0.06 }
+                paint: { 'fill-color': '#5A9E8F', 'fill-opacity': 0.06 }
             });
 
             // Borde de la region - glow
@@ -2496,11 +2488,11 @@
             });
             map.addLayer({
                 id: 'boundary-glow', type: 'line', source: 'boundary-line',
-                paint: { 'line-color': '#9E1B32', 'line-width': 6, 'line-opacity': 0.25, 'line-blur': 4 }
+                paint: { 'line-color': '#5A9E8F', 'line-width': 6, 'line-opacity': 0.25, 'line-blur': 4 }
             });
             map.addLayer({
                 id: 'boundary-stroke', type: 'line', source: 'boundary-line',
-                paint: { 'line-color': '#9E1B32', 'line-width': 2.5, 'line-opacity': 0.7 }
+                paint: { 'line-color': '#5A9E8F', 'line-width': 2.5, 'line-opacity': 0.7 }
             });
         }
 
@@ -2510,7 +2502,6 @@
             activeFilters.difficulties = Object.keys(DIFFICULTY);
             activeFilters.distances = Object.keys(DISTANCE_RANGES);
             activeFilters.types = Object.keys(TYPE_CONFIG);
-            activeFilters.statuses = Object.keys(STATUS_CONFIG);
             // Recopilar todas las etiquetas unicas
             const allTags = new Set();
             viasVerdes.forEach(v => { if (v.tags) v.tags.forEach(t => allTags.add(t)); });
@@ -2598,7 +2589,7 @@
 
             poisData.features.forEach(f => {
                 const p = f.properties;
-                const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.estacion;
                 const el = document.createElement('div');
                 el.className = 'poi-marker';
                 el.style.setProperty('--poi-color', cfg.color);
@@ -2724,7 +2715,7 @@
                 ${hasTour ? '<span class="badge badge-tour360">360°</span>' : ''}
             </div>
             <div style="display:flex; gap:8px; margin-bottom:8px;">
-                ${hasTour ? `<button onclick="open360Tour('${props.url_tour_360}')" style="flex:1; padding:10px; background:#9E1B32; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver Tour 360°</button>` : ''}
+                ${hasTour ? `<button onclick="open360Tour('${props.url_tour_360}')" style="flex:1; padding:10px; background:#5A9E8F; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver Tour 360°</button>` : ''}
                 <button onclick="openRouteModal('${props.id_ruta}')" style="flex:1; padding:10px; background:var(--btn-secondary-bg); color:var(--btn-secondary-text); border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Más info</button>
             </div>
             <div class="share-options-container">
@@ -2747,7 +2738,7 @@
         }
 
         function showPOIPopup(props, coords) {
-            const cfg = POI_CONFIG[props.tipo] || POI_CONFIG.servicio;
+            const cfg = POI_CONFIG[props.tipo] || POI_CONFIG.estacion;
             const route = routesData.features.find(f => f.properties.id_ruta === props.id_ruta);
             const routeName = route ? route.properties.nombre : '';
             const hasTour = props.url_tour && props.url_tour.length > 0;
@@ -2759,7 +2750,7 @@
         </div>
         <div style="padding: 16px;">
             <p style="font-size:13px; color:#4b5563; margin:0 0 12px;">${props.descripcion}</p>
-            ${hasTour ? `<button onclick="open360Tour('${props.url_tour}')" style="width:100%; padding:10px; background:#9E1B32; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver en 360°</button>` : ''}
+            ${hasTour ? `<button onclick="open360Tour('${props.url_tour}')" style="width:100%; padding:10px; background:#5A9E8F; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;">Ver en 360°</button>` : ''}
         </div>
     `;
 
@@ -2779,7 +2770,7 @@
             const pois = getRoutePois(routeId).sort((a, b) => (a.properties.orden_ruta || 0) - (b.properties.orden_ruta || 0));
             if (!pois.length) return '<div class="tab-empty"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>No hay datos de itinerario disponibles para esta ruta.</div>';
             const typeColors = {
-                estacion: { bg: '#9E1B32', label: 'Estacion' },
+                estacion: { bg: '#5A9E8F', label: 'Estacion' },
                 pueblo: { bg: '#7C3AED', label: 'Pueblo' },
                 area_descanso: { bg: '#84CC16', label: 'Descanso' },
                 puente: { bg: '#D97706', label: 'Puente' },
@@ -2820,7 +2811,7 @@
             if (!pois.length) return '<div class="tab-empty"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>No hay puntos de patrimonio registrados.</div>';
             const iconMap = {
                 patrimonio: { bg: 'linear-gradient(135deg, #92400E, #78350F)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' },
-                estacion: { bg: 'linear-gradient(135deg, #9E1B32, #7A1528)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' },
+                estacion: { bg: 'linear-gradient(135deg, #5A9E8F, #1E3330)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' },
                 puente: { bg: 'linear-gradient(135deg, #D97706, #B45309)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11m16-11v11"/></svg>' },
                 tunel: { bg: 'linear-gradient(135deg, #6B7280, #4B5563)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m-8-9H3m18 0h-1M5.6 5.6l.7.7m12.4 12.4l-.7-.7M5.6 18.4l.7-.7M18.4 5.6l-.7.7"/></svg>' },
                 mirador: { bg: 'linear-gradient(135deg, #F59E0B, #D97706)', svg: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>' }
@@ -2903,7 +2894,7 @@
             // Count POIs by category
             const routePois = getRoutePois(routeId);
             const patrimonioCount = routePois.filter(f => ['patrimonio','estacion','puente','tunel','mirador'].includes(f.properties.tipo)).length;
-            const serviciosCount = routePois.filter(f => ['albergue','area_descanso','restaurante','aparcamiento','fuente_agua','camping','servicio','centro_salud'].includes(f.properties.tipo)).length;
+            const serviciosCount = routePois.filter(f => ['albergue','alojamiento','area_descanso','restaurante','aparcamiento','centro_salud','comisaria','farmacia','supermercado','oficina_turismo'].includes(f.properties.tipo)).length;
 
             const html = `
         <div class="modal-header">
@@ -2984,7 +2975,7 @@
 
                 <!-- Action Buttons -->
                 <div style="display:flex; gap:10px; margin-bottom:16px;">
-                    ${hasTour ? `<button onclick="open360Tour('${p.url_tour_360}')" style="flex:1; padding:14px; background:linear-gradient(135deg, #9E1B32, #7A1528); color:white; border:none; border-radius:14px; cursor:pointer; font-size:13px; font-weight:700; box-shadow:0 8px 16px -4px rgba(158, 27, 50, 0.4); display:flex; align-items:center; justify-content:center; gap:6px;">
+                    ${hasTour ? `<button onclick="open360Tour('${p.url_tour_360}')" style="flex:1; padding:14px; background:linear-gradient(135deg, #5A9E8F, #1E3330); color:white; border:none; border-radius:14px; cursor:pointer; font-size:13px; font-weight:700; box-shadow:0 8px 16px -4px rgba(90, 158, 143, 0.4); display:flex; align-items:center; justify-content:center; gap:6px;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
                         Tour 360°
                     </button>` : ''}
@@ -3111,14 +3102,14 @@
                     datasets: [{
                         label: 'Altitud',
                         data: altitudes,
-                        borderColor: '#9E1B32',
+                        borderColor: '#5A9E8F',
                         backgroundColor: (context) => {
                             const chart = context.chart;
                             const { ctx, chartArea } = chart;
                             if (!chartArea) return null;
                             const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                            gradient.addColorStop(0, 'rgba(158, 27, 50, 0.35)');
-                            gradient.addColorStop(1, 'rgba(158, 27, 50, 0)');
+                            gradient.addColorStop(0, 'rgba(90, 158, 143, 0.35)');
+                            gradient.addColorStop(1, 'rgba(90, 158, 143, 0)');
                             return gradient;
                         },
                         borderWidth: 2,
@@ -3292,7 +3283,7 @@
                 const tipo = f.properties.tipo;
                 if (filterText) {
                     const q = filterText.toLowerCase();
-                    const cfg = POI_CONFIG[tipo] || POI_CONFIG.servicio;
+                    const cfg = POI_CONFIG[tipo] || POI_CONFIG.estacion;
                     if (!f.properties.titulo.toLowerCase().includes(q) && !cfg.label.toLowerCase().includes(q) && !f.properties.descripcion.toLowerCase().includes(q)) return;
                 }
                 typeCounts[tipo] = (typeCounts[tipo] || 0) + 1;
@@ -3320,7 +3311,7 @@
                 const p = f.properties;
                 if (filterText) {
                     const q = filterText.toLowerCase();
-                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.estacion;
                     if (!p.titulo.toLowerCase().includes(q) && !cfg.label.toLowerCase().includes(q) && !p.descripcion.toLowerCase().includes(q)) return;
                 }
                 if (grouped[p.id_ruta]) grouped[p.id_ruta].pois.push(f);
@@ -3342,7 +3333,7 @@
             <div class="poi-group-items hidden" style="flex-direction:column; gap:4px; padding:6px 0 0 18px;">`;
                 g.pois.forEach(f => {
                     const p = f.properties;
-                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.servicio;
+                    const cfg = POI_CONFIG[p.tipo] || POI_CONFIG.estacion;
                     html += `
                 <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--card-bg); border-radius:8px; border:1px solid var(--card-border); cursor:pointer;" onclick="flyToPOI(${f.geometry.coordinates[0]}, ${f.geometry.coordinates[1]})">
                     <div style="width:30px; height:30px; border-radius:50%; background:white; border:2px solid ${cfg.color}; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:${cfg.color};">${cfg.svg}</div>
@@ -3381,11 +3372,6 @@
             // Filtros de tipo de ruta
             document.getElementById('typeFilters').innerHTML = Object.entries(TYPE_CONFIG).map(([k, v]) =>
                 `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('types', '${k}')"><span style="font-size:16px; line-height:1;">${v.icon}</span><span style="font-size:13px;">${v.label}</span></label>`
-            ).join('');
-
-            // Filtros de estado
-            document.getElementById('statusFilters').innerHTML = Object.entries(STATUS_CONFIG).map(([k, v]) =>
-                `<label class="filter-item"><input type="checkbox" value="${k}" checked onchange="toggleFilter('statuses', '${k}')"><span style="width:12px; height:12px; border-radius:50%; background:${v.color};"></span><span style="font-size:13px;">${v.label}</span></label>`
             ).join('');
 
             // Filtros de etiquetas
@@ -3480,8 +3466,6 @@
             if (!activeFilters.difficulties.includes(diff)) return false;
             // Verificar tipo
             if (!activeFilters.types.includes(type)) return false;
-            // Verificar estado
-            if (!activeFilters.statuses.includes(status)) return false;
             // Verificar distancia
             let distMatch = false;
             for (const rangeKey of activeFilters.distances) {
@@ -3556,7 +3540,6 @@
             activeFilters.difficulties = Object.keys(DIFFICULTY);
             activeFilters.distances = Object.keys(DISTANCE_RANGES);
             activeFilters.types = Object.keys(TYPE_CONFIG);
-            activeFilters.statuses = Object.keys(STATUS_CONFIG);
             const allTags = new Set();
             viasVerdes.forEach(v => { if (v.tags) v.tags.forEach(t => allTags.add(t)); });
             activeFilters.tags = Array.from(allTags);

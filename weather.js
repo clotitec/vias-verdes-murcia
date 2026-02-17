@@ -272,7 +272,7 @@ function renderWeatherBadge(weatherData) {
     const temp = Math.round(c.temperature_2m);
 
     let tempColor = '#6b7280';
-    if (temp >= 30) tempColor = '#9E1B32';
+    if (temp >= 30) tempColor = '#ef4444';
     else if (temp <= 10) tempColor = '#3b82f6';
 
     return `<span class="badge weather-badge" style="background:var(--btn-secondary-bg); color:${tempColor}; display:flex; align-items:center; gap:3px; font-weight:600;">${icon} ${temp}°</span>`;

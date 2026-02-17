@@ -265,7 +265,7 @@ function renderTransportTab() {
         if (unique.length === 0) return;
 
         const routeShort = route.name.replace('Vía Verde ', '').replace('del ', '').replace('de ', '').replace('la ', '');
-        const color = route.color?.main || '#9E1B32';
+        const color = route.color?.main || '#5A9E8F';
 
         html += `
         <div style="margin-bottom:8px;">
@@ -425,7 +425,7 @@ async function showTransportMarkers() {
         const size = isStation ? 32 : 26;
         const iconSize = isStation ? 16 : 13;
 
-        el.style.cssText = `width:${size}px; height:${size}px; border-radius:${size / 2}px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1.5px solid rgba(${isStation ? '158,27,50' : '37,99,235'},0.3); display:flex; align-items:center; justify-content:center; font-size:${iconSize}px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.12); transition:transform 0.15s;`;
+        el.style.cssText = `width:${size}px; height:${size}px; border-radius:${size / 2}px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1.5px solid rgba(${isStation ? '90,158,143' : '37,99,235'},0.3); display:flex; align-items:center; justify-content:center; font-size:${iconSize}px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.12); transition:transform 0.15s;`;
         el.textContent = getTransportIcon(stop.type);
 
         el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.2)'; });

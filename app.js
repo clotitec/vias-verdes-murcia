@@ -81,13 +81,10 @@ function renderDesktopSidebar() {
     const container = document.getElementById('desktopSidebar');
     if (!container) return;
 
-    const operativas = viasVerdes.filter(v => v.status === 'operational').length;
-    const proximamente = viasVerdes.filter(v => v.status === 'coming_soon').length;
-
     container.innerHTML = `
-        <div class="p-6 pb-4" style="border-bottom:1px solid rgba(255,255,255,0.3);">
+        <div class="p-6 pb-4" style="border-bottom:1px solid rgba(201,212,196,0.3);">
             <div class="flex items-center gap-3 mb-5">
-                <div class="flex-shrink-0 w-24 h-24 rounded-2xl flex items-center justify-center overflow-hidden" style="background:rgba(255,255,255,0.6); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.5); box-shadow:0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);">
+                <div class="flex-shrink-0 w-24 h-24 rounded-2xl flex items-center justify-center overflow-hidden" style="background:rgba(255,255,255,0.6); backdrop-filter:blur(12px); border:1px solid rgba(201,212,196,0.5); box-shadow:0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);">
                     <img src="assets/images/logo principal vias verdes de murcia_1.webp" class="w-full h-full object-contain" alt="Vías Verdes">
                 </div>
                 <div class="flex-1">
@@ -97,18 +94,14 @@ function renderDesktopSidebar() {
             </div>
             <div class="relative">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style="color:var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" id="searchDesktop" placeholder="Buscar vía verde..." class="w-full pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-murcia/20 transition-all" style="background:rgba(255,255,255,0.55); backdrop-filter:blur(12px); border-radius:14px; border:1px solid rgba(255,255,255,0.5); box-shadow:inset 0 1px 2px rgba(0,0,0,0.04);">
+                <input type="text" id="searchDesktop" placeholder="Buscar vía verde..." class="w-full pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-murcia/20 transition-all" style="background:rgba(255,255,255,0.55); backdrop-filter:blur(12px); border-radius:14px; border:1px solid rgba(201,212,196,0.5); box-shadow:inset 0 1px 2px rgba(0,0,0,0.04);">
             </div>
         </div>
-        <div class="px-4 py-3" style="background:rgba(158,27,50,0.04); border-bottom:1px solid rgba(255,255,255,0.3);">
-            <div class="flex items-center justify-between">
+        <div class="px-4 py-3" style="background:rgba(90,158,143,0.04); border-bottom:1px solid rgba(201,212,196,0.3);">
+            <div class="flex items-center justify-center">
                 <span class="text-sm font-bold text-murcia flex items-center gap-2">
                     <span class="text-lg">🚴</span> ${viasVerdes.length} Vías Verdes
                 </span>
-                <div class="flex gap-2 text-xs">
-                    <span class="px-2 py-1 rounded-full font-semibold" style="background:rgba(158,27,50,0.12); color:#9E1B32;">${operativas} Operativa</span>
-                    <span class="px-2 py-1 rounded-full font-semibold" style="background:rgba(245,158,11,0.12); color:#92400e;">${proximamente} Próx.</span>
-                </div>
             </div>
         </div>
         <div id="filterContainerDesktop" class="px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar" style="border-bottom:1px solid rgba(255,255,255,0.3);"></div>
@@ -123,21 +116,18 @@ function renderDesktopSidebar() {
 }
 
 function renderMobileSheet() {
-    const operativas = viasVerdes.filter(v => v.status === 'operational').length;
-    const proximamente = viasVerdes.filter(v => v.status === 'coming_soon').length;
-
     document.getElementById('bottomSheet').innerHTML = `
         <div id="sheetHandle" class="w-full py-4 flex items-center justify-center cursor-grab active:cursor-grabbing shrink-0"><div class="w-10 h-1.5 rounded-full" style="background:rgba(0,0,0,0.12);"></div></div>
         <div class="flex flex-col flex-1 overflow-hidden">
             <div class="flex items-center justify-between px-4 pb-3 shrink-0">
                 <div class="flex items-center gap-3 w-full">
-                    <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden" style="background:rgba(255,255,255,0.6); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.5); box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+                    <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden" style="background:rgba(255,255,255,0.6); backdrop-filter:blur(12px); border:1px solid rgba(201,212,196,0.5); box-shadow:0 4px 12px rgba(0,0,0,0.06);">
                         <img src="assets/images/logo principal vias verdes de murcia_1.webp" class="w-full h-full object-contain" alt="Vías Verdes">
                     </div>
                     <div class="flex-1">
                         <p class="font-bold leading-tight" style="color:var(--text-primary);">Vías Verdes</p>
                         <p class="text-sm" style="color:var(--text-secondary);">Región de Murcia</p>
-                        <p class="text-xs mt-1" style="color:var(--text-muted);">${operativas} Operativa · ${proximamente} Próx.</p>
+                        <p class="text-xs mt-1" style="color:var(--text-muted);">${viasVerdes.length} rutas · 180+ km</p>
                     </div>
                 </div>
             </div>
@@ -149,7 +139,7 @@ function renderMobileSheet() {
 function renderDetailModal() {
     document.getElementById('detailModal').innerHTML = `
         <div class="absolute inset-0 bg-black/25 backdrop-blur-md" onclick="closeDetail()"></div>
-        <div class="absolute bottom-0 inset-x-0 rounded-t-3xl lg:rounded-3xl lg:bottom-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-[480px] lg:max-h-[85vh] flex flex-col overflow-hidden max-h-[90vh] animate-slide-up" style="background:rgba(255,255,255,0.82); backdrop-filter:blur(40px) saturate(180%); -webkit-backdrop-filter:blur(40px) saturate(180%); box-shadow:0 40px 80px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.4);">
+        <div class="absolute bottom-0 inset-x-0 rounded-t-3xl lg:rounded-3xl lg:bottom-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-[480px] lg:max-h-[85vh] flex flex-col overflow-hidden max-h-[90vh] animate-slide-up" style="background:rgba(244,243,238,0.88); backdrop-filter:blur(40px) saturate(180%); -webkit-backdrop-filter:blur(40px) saturate(180%); box-shadow:0 40px 80px rgba(30,51,48,0.15), inset 0 1px 0 rgba(255,255,255,0.5); border:1px solid rgba(201,212,196,0.4);">
             <!-- Hero Image -->
             <div id="detailHeader" class="relative h-52 shrink-0 bg-cover bg-center transition-all" style="background:rgba(0,0,0,0.04);">
                 <div id="detailMapPreview" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-murcia/20 to-murcia-light/20">
@@ -157,7 +147,7 @@ function renderDetailModal() {
                 </div>
                 <button onclick="closeDetail()" class="absolute top-4 right-4 w-10 h-10 text-white rounded-full flex items-center justify-center touch-target active:scale-95 transition-transform" style="background:rgba(0,0,0,0.25); backdrop-filter:blur(16px);"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
                 <!-- Type Badge — Glass Pill -->
-                <div id="detailTypeBadge" class="absolute bottom-4 left-4 px-3 py-1.5 text-white text-xs font-bold rounded-full" style="background:rgba(158,27,50,0.85); backdrop-filter:blur(8px); box-shadow:0 2px 8px rgba(158,27,50,0.3);"></div>
+                <div id="detailTypeBadge" class="absolute bottom-4 left-4 px-3 py-1.5 text-white text-xs font-bold rounded-full" style="background:rgba(90,158,143,0.85); backdrop-filter:blur(8px); box-shadow:0 2px 8px rgba(90,158,143,0.3);"></div>
             </div>
             <div class="p-6 overflow-y-auto flex-1">
                 <!-- Title & Location -->
@@ -259,7 +249,7 @@ function createRouteMarker(coords, routeNumber, color, onClick, tooltipText, isC
     el.style.cssText = `cursor:pointer;position:relative;`;
 
     const inner = document.createElement('div');
-    const bgColor = isComingSoon ? '#771E2E' : color;
+    const bgColor = isComingSoon ? '#1E3330' : color;
     inner.style.cssText = `
         width:28px;
         height:28px;
@@ -387,8 +377,8 @@ function loadDataLayer() {
         const outlineId = `${id}-outline`;
         const pathId = `${id}-path`;
         const isComingSoon = route.status === 'coming_soon';
-        const color = isComingSoon ? '#771E2E' : (route.color?.main || '#9E1B32');
-        const glow = isComingSoon ? '#992E3E' : (route.color?.glow || '#C43A54');
+        const color = isComingSoon ? '#1E3330' : (route.color?.main || '#5A9E8F');
+        const glow = isComingSoon ? '#2C3E3A' : (route.color?.glow || '#7DBCAD');
 
         try {
             // Convertir coords de [lon,lat,elev] a [lon,lat] para MapLibre
@@ -488,7 +478,7 @@ function renderList() {
 
 function createCard(item) {
     const isComingSoon = item.status === 'coming_soon';
-    const badgeColor = isComingSoon ? '#771E2E' : item.color.main;
+    const badgeColor = isComingSoon ? '#1E3330' : item.color.main;
     const typeIcon = item.type === 'circular' ? '↻' : '→';
     const typeLabel = item.type === 'circular' ? 'Circular' : 'Lineal';
 
@@ -574,7 +564,7 @@ function openDetail(item) {
 
     const tagsDiv = document.getElementById('detailTags');
     if (item.tags?.length) {
-        tagsDiv.innerHTML = item.tags.map(t => `<span class="px-3 py-1 text-xs font-medium" style="background:rgba(158,27,50,0.1); color:#9E1B32; border-radius:100px; border:1px solid rgba(158,27,50,0.15); backdrop-filter:blur(4px);">${t}</span>`).join('');
+        tagsDiv.innerHTML = item.tags.map(t => `<span class="px-3 py-1 text-xs font-medium" style="background:rgba(90,158,143,0.1); color:#5A9E8F; border-radius:100px; border:1px solid rgba(90,158,143,0.15); backdrop-filter:blur(4px);">${t}</span>`).join('');
         tagsDiv.style.display = 'flex';
     } else {
         tagsDiv.style.display = 'none';
@@ -684,7 +674,7 @@ function locateUser() {
             map.flyTo({ center: coords, zoom: 14 });
             const el = document.createElement('div'); const pulse = document.createElement('div'); pulse.className = 'pulse-ring'; el.appendChild(pulse);
             new maplibregl.Marker({ element: el }).setLngLat(coords).addTo(map);
-            new maplibregl.Marker({ color: '#9E1B32', scale: 0.8 }).setLngLat(coords).addTo(map);
+            new maplibregl.Marker({ color: '#5A9E8F', scale: 0.8 }).setLngLat(coords).addTo(map);
         }, () => alert('No se pudo obtener la ubicación'));
     }
 }
@@ -766,10 +756,10 @@ function drawElevationProfile(coords) {
 
     ctx.clearRect(0, 0, w, h);
 
-    ctx.strokeStyle = 'rgba(158, 27, 50, 0.08)';
+    ctx.strokeStyle = 'rgba(90, 158, 143, 0.08)';
     ctx.lineWidth = 1;
     ctx.font = 'bold 9px Inter, system-ui';
-    ctx.fillStyle = 'rgba(158, 27, 50, 0.4)';
+    ctx.fillStyle = 'rgba(90, 158, 143, 0.4)';
 
     const steps = 4;
     for (let i = 0; i <= steps; i++) {
@@ -794,8 +784,8 @@ function drawElevationProfile(coords) {
     }
 
     const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
-    gradient.addColorStop(0, 'rgba(158, 27, 50, 0.2)');
-    gradient.addColorStop(1, 'rgba(158, 27, 50, 0)');
+    gradient.addColorStop(0, 'rgba(90, 158, 143, 0.2)');
+    gradient.addColorStop(1, 'rgba(90, 158, 143, 0)');
 
     ctx.beginPath();
     ctx.moveTo(padding.left, padding.top + chartH);
@@ -814,7 +804,7 @@ function drawElevationProfile(coords) {
         const y = padding.top + chartH - ((p.y - minElev) / range) * chartH;
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     });
-    ctx.strokeStyle = '#9E1B32';
+    ctx.strokeStyle = '#5A9E8F';
     ctx.lineWidth = 2;
     ctx.lineJoin = 'round';
     ctx.stroke();

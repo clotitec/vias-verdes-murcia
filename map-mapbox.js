@@ -34,7 +34,7 @@ const POI_CONFIG = {
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M4 20V10a8 8 0 1116 0v10M8 20v-6a4 4 0 018 0v6"/></svg>'
     },
     estacion: {
-        color: '#9E1B32',
+        color: '#5A9E8F',
         icon: 'rail',
         label: 'Estación',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M12 19v2M8 21h8M8 7h8M8 11h8M8 15h8"/></svg>'
@@ -45,35 +45,11 @@ const POI_CONFIG = {
         label: 'Patrimonio',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>'
     },
-    servicio: {
-        color: '#0EA5E9',
-        icon: 'information',
-        label: 'Servicio',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
-    },
-    playa: {
-        color: '#06B6D4',
-        icon: 'beach',
-        label: 'Playa',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M5 21l7-8 7 8"/></svg>'
-    },
     puente: {
         color: '#D97706',
         icon: 'bridge',
         label: 'Puente',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16h16M4 16l2-8M4 16l-2 4M20 16l-2-8M20 16l2 4M6 8h12M8 8v8M16 8v8M12 8v8"/></svg>'
-    },
-    panel_interpretativo: {
-        color: '#3B82F6',
-        icon: 'information',
-        label: 'Panel Informativo',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4M12 16h.01"/></svg>'
-    },
-    punto_conflictivo: {
-        color: '#DC2626',
-        icon: 'danger',
-        label: 'Precaución',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>'
     },
     albergue: {
         color: '#059669',
@@ -105,23 +81,41 @@ const POI_CONFIG = {
         label: 'Aparcamiento',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>'
     },
-    fuente_agua: {
-        color: '#0891B2',
-        icon: 'drinking-water',
-        label: 'Fuente de Agua',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M8 4l4 4 4-4"/><path d="M6 12a6 6 0 0012 0"/><path d="M6 12H4a8 8 0 0016 0h-2"/></svg>'
-    },
-    camping: {
-        color: '#15803D',
-        icon: 'campsite',
-        label: 'Camping',
-        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><path d="M12 14l-4 8h8l-4-8z"/></svg>'
-    },
     centro_salud: {
         color: '#E11D48',
         icon: 'hospital',
         label: 'Centro Salud',
         svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v12M6 12h12"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>'
+    },
+    alojamiento: {
+        color: '#7C3AED',
+        icon: 'lodging',
+        label: 'Alojamiento',
+        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2m-16 0H3M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4v4h4v-4"/></svg>'
+    },
+    comisaria: {
+        color: '#1E40AF',
+        icon: 'police',
+        label: 'Comisaría',
+        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 21V11l3-6 3 6v10M6 21V14h3M15 21V14h3M12 8v1"/><circle cx="12" cy="5" r="1"/></svg>'
+    },
+    farmacia: {
+        color: '#16A34A',
+        icon: 'pharmacy',
+        label: 'Farmacia',
+        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>'
+    },
+    supermercado: {
+        color: '#EA580C',
+        icon: 'grocery',
+        label: 'Supermercado',
+        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>'
+    },
+    oficina_turismo: {
+        color: '#0891B2',
+        icon: 'information',
+        label: 'Of. Turismo',
+        svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
     }
 };
 
@@ -302,7 +296,7 @@ function addPoisLayer(data) {
     data.features.forEach(feature => {
         const props = feature.properties;
         const coords = feature.geometry.coordinates;
-        const poiConfig = POI_CONFIG[props.tipo] || POI_CONFIG.servicio;
+        const poiConfig = POI_CONFIG[props.tipo] || POI_CONFIG.estacion;
 
         // Create custom marker element
         const el = document.createElement('div');
@@ -371,7 +365,7 @@ function showRoutePopup(properties, lngLat) {
 }
 
 function showPOIPopup(properties, coords) {
-    const poiConfig = POI_CONFIG[properties.tipo] || POI_CONFIG.servicio;
+    const poiConfig = POI_CONFIG[properties.tipo] || POI_CONFIG.estacion;
     const route = routesData.features.find(f => f.properties.id_ruta === properties.id_ruta);
     const routeName = route ? route.properties.nombre : 'Ruta desconocida';
     const hasTour = properties.url_tour && properties.url_tour.length > 0;
@@ -459,7 +453,7 @@ function openRouteModal(routeId) {
                 </h3>
                 <div class="modal-pois">
                     ${routePOIs.map(poi => {
-                        const poiConfig = POI_CONFIG[poi.properties.tipo] || POI_CONFIG.servicio;
+                        const poiConfig = POI_CONFIG[poi.properties.tipo] || POI_CONFIG.estacion;
                         return `
                         <div class="modal-poi" onclick="flyToPOI(${poi.geometry.coordinates[0]}, ${poi.geometry.coordinates[1]}); closeRouteModal();">
                             <div class="poi-icon poi-${poi.properties.tipo}">
@@ -584,7 +578,7 @@ function renderPOIsList() {
 
     container.innerHTML = sortedPOIs.map(feature => {
         const props = feature.properties;
-        const poiConfig = POI_CONFIG[props.tipo] || POI_CONFIG.servicio;
+        const poiConfig = POI_CONFIG[props.tipo] || POI_CONFIG.estacion;
         const route = routesData.features.find(f => f.properties.id_ruta === props.id_ruta);
         const routeName = route ? route.properties.nombre.replace('Vía Verde ', '') : '';
 
