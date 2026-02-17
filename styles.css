@@ -305,9 +305,9 @@ body {
 }
 
 .badge-difficulty-easy {
-    background: rgba(16, 185, 129, 0.15);
-    color: #059669;
-    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(90, 158, 143, 0.15);
+    color: #5A9E8F;
+    border-color: rgba(90, 158, 143, 0.3);
 }
 
 .badge-difficulty-medium {
