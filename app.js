@@ -62,16 +62,19 @@ function addBoundaryMask() {
 function toggleSatellite() {
     isSatellite = !isSatellite;
     const btn = document.getElementById('satelliteBtn');
+    const satIcon = document.getElementById('satelliteBtnIcon');
     if (isSatellite) {
         if (!map.getSource('satellite')) {
             map.addSource('satellite', satelliteSource);
         }
         map.addLayer({ id: 'satellite-layer', type: 'raster', source: 'satellite' }, 'mask-fill');
         btn.classList.add('active');
+        if (satIcon) satIcon.style.color = '#FFFFFF';
         if (map.getLayer('mask-fill')) map.setPaintProperty('mask-fill', 'fill-opacity', 0.5);
     } else {
         if (map.getLayer('satellite-layer')) map.removeLayer('satellite-layer');
         btn.classList.remove('active');
+        if (satIcon) satIcon.style.color = 'var(--text-secondary)';
         if (map.getLayer('mask-fill')) map.setPaintProperty('mask-fill', 'fill-opacity', 0.35);
     }
 }
@@ -317,7 +320,7 @@ function addRouteLayers(route, color, isComingSoon) {
             paint: {
                 'circle-radius': 5,
                 'circle-color': '#FFFFFF',
-                'circle-stroke-color': color,
+                'circle-stroke-color': '#5A9E8F',
                 'circle-stroke-width': 2
             }
         });
@@ -482,6 +485,17 @@ function createCard(item) {
     const typeIcon = item.type === 'circular' ? '↻' : '→';
     const typeLabel = item.type === 'circular' ? 'Circular' : 'Lineal';
 
+    // Compute card times
+    const cardKm = parseFloat(item.km);
+    const cardBikeMins = Math.round((cardKm / 15) * 60);
+    const cardWalkMins = Math.round((cardKm / 4.5) * 60);
+    const fmtCardTime = (mins) => {
+        if (mins < 60) return `${mins}min`;
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return m > 0 ? `${h}h${m}m` : `${h}h`;
+    };
+
     return `<div onclick="openDetailById('${item.id}')"
         class="card-item ${isComingSoon ? 'card-coming-soon' : ''} flex items-center gap-4">
 
@@ -498,7 +512,9 @@ function createCard(item) {
             <p class="text-sm flex items-center gap-2 flex-wrap" style="color:var(--text-secondary);">
                 <span>${item.km} km</span>
                 <span style="color:var(--text-muted);">·</span>
-                <span>${item.time}</span>
+                <span>🚴 ${fmtCardTime(cardBikeMins)}</span>
+                <span style="color:var(--text-muted);">·</span>
+                <span>🚶 ${fmtCardTime(cardWalkMins)}</span>
                 <span style="color:var(--text-muted);">·</span>
                 <span>${typeIcon} ${typeLabel}</span>
             </p>
@@ -546,7 +562,21 @@ function openDetail(item) {
 
     // Stats Grid (Bareyo Style: centered, clean)
     const dl = { easy: 'Fácil', medium: 'Media', moderate: 'Moderado' };
-    const dc = { easy: 'text-green-600', medium: 'text-amber-600', moderate: 'text-orange-600' };
+    const dc = { easy: 'text-murcia', medium: 'text-amber-600', moderate: 'text-orange-600' };
+
+    // Compute times for cycling (~15 km/h) and walking (~4.5 km/h)
+    const kmNum = parseFloat(item.km);
+    const bikeMinutes = Math.round((kmNum / 15) * 60);
+    const walkMinutes = Math.round((kmNum / 4.5) * 60);
+    const formatTime = (mins) => {
+        if (mins < 60) return `${mins}min`;
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return m > 0 ? `${h}h ${m}m` : `${h}h`;
+    };
+    const bikeTime = formatTime(bikeMinutes);
+    const walkTime = formatTime(walkMinutes);
+
     const stats = document.getElementById('detailStats');
     stats.innerHTML = `
         <div class="glass-stat text-center p-3">
@@ -554,8 +584,9 @@ function openDetail(item) {
             <div class="text-xs uppercase tracking-wider" style="color:var(--text-muted);">KM</div>
         </div>
         <div class="glass-stat text-center p-3">
-            <div class="text-2xl font-bold" style="color:var(--text-primary);">${item.time.split(' ')[0]}</div>
-            <div class="text-xs uppercase tracking-wider" style="color:var(--text-muted);">Tiempo</div>
+            <div class="text-lg font-bold" style="color:var(--text-primary);">🚴 ${bikeTime}</div>
+            <div class="text-lg font-bold mt-1" style="color:var(--text-primary);">🚶 ${walkTime}</div>
+            <div class="text-xs uppercase tracking-wider mt-1" style="color:var(--text-muted);">Tiempo</div>
         </div>
         <div class="glass-stat text-center p-3">
             <div class="text-2xl font-bold ${dc[item.diff]}">${dl[item.diff]}</div>

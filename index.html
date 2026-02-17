@@ -79,8 +79,8 @@
             --scrollbar-track: transparent;
             --scrollbar-thumb: rgba(90, 158, 143, 0.25);
             --scrollbar-hover: rgba(90, 158, 143, 0.4);
-            --badge-easy-bg: rgba(16, 185, 129, 0.15);
-            --badge-easy-text: #065f46;
+            --badge-easy-bg: rgba(90, 158, 143, 0.15);
+            --badge-easy-text: #2C3E3A;
             --badge-medium-bg: rgba(245, 158, 11, 0.15);
             --badge-medium-text: #92400e;
             --badge-hard-bg: rgba(239, 68, 68, 0.15);
@@ -295,9 +295,9 @@
         }
 
         .badge-easy {
-            background: #22c55e;
+            background: rgba(90, 158, 143, 0.85);
             color: #ffffff;
-            border-color: rgba(16, 185, 129, 0.4);
+            border-color: rgba(90, 158, 143, 0.4);
         }
 
         .badge-medium {
@@ -1160,21 +1160,21 @@
         .km-marker:hover > div { transform: scale(1.2); }
 
         .km-marker-dot {
-            min-width: 28px;
-            height: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.88);
+            min-width: 22px;
+            height: 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 2px solid #5A9E8F;
+            border: 1.5px solid rgba(90, 158, 143, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
-            font-weight: 700;
-            color: #1E3330;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
-            padding: 0 5px;
+            font-size: 7.5px;
+            font-weight: 600;
+            color: #607A74;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.4);
+            padding: 0 4px;
             white-space: nowrap;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -1188,40 +1188,40 @@
         }
 
         .km-marker-start {
-            min-width: 34px;
-            height: 22px;
-            border-radius: 11px;
-            background: rgba(34, 197, 94, 0.9);
+            min-width: 28px;
+            height: 18px;
+            border-radius: 9px;
+            background: rgba(90, 158, 143, 0.85);
             backdrop-filter: blur(8px);
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 1.5px solid rgba(255,255,255,0.5);
             color: white;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-            padding: 0 6px;
+            box-shadow: 0 2px 6px rgba(90, 158, 143, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            padding: 0 5px;
             white-space: nowrap;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .km-marker:hover .km-marker-start { transform: scale(1.15); }
 
         .km-marker-end {
-            min-width: 34px;
-            height: 22px;
-            border-radius: 11px;
-            background: rgba(239, 68, 68, 0.9);
+            min-width: 28px;
+            height: 18px;
+            border-radius: 9px;
+            background: rgba(30, 51, 48, 0.8);
             backdrop-filter: blur(8px);
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 1.5px solid rgba(255,255,255,0.5);
             color: white;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-            padding: 0 6px;
+            box-shadow: 0 2px 6px rgba(30, 51, 48, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            padding: 0 5px;
             white-space: nowrap;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -1690,7 +1690,7 @@
                 <button onclick="toggleSatellite()" id="satelliteBtn"
                     class="map-control-glass flex items-center justify-center transition-all duration-200"
                     title="Vista satélite">
-                    <svg class="w-4 h-4" style="color:var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="satelliteBtnIcon" class="w-4 h-4" style="color:var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -2283,7 +2283,7 @@
         };
 
         const DIFFICULTY = {
-            'fácil': { color: '#22c55e', label: 'Fácil', class: 'badge-easy' },
+            'fácil': { color: '#5A9E8F', label: 'Fácil', class: 'badge-easy' },
             'media': { color: '#f59e0b', label: 'Media', class: 'badge-medium' },
             'difícil': { color: '#ef4444', label: 'Difícil', class: 'badge-hard' }
         };
@@ -2664,8 +2664,8 @@
                 startMarker._kmType = 'start';
                 kmMarkers.push(startMarker);
 
-                // Intermediate markers every 5km — full size, always visible
-                for (let km = 5; km < totalKm; km += 5) {
+                // Intermediate markers every 10km — compact, always visible
+                for (let km = 10; km < totalKm; km += 10) {
                     let coord;
                     if (isReversed) {
                         coord = getCoordAtKm(totalKm - km);
@@ -3639,10 +3639,10 @@
                 });
                 // Enhance start/end markers visibility on satellite
                 document.querySelectorAll('.km-marker-start').forEach(el => {
-                    el.style.boxShadow = '0 2px 12px rgba(34, 197, 94, 0.6), 0 0 0 2px rgba(255,255,255,0.8)';
+                    el.style.boxShadow = '0 2px 12px rgba(90, 158, 143, 0.6), 0 0 0 2px rgba(255,255,255,0.8)';
                 });
                 document.querySelectorAll('.km-marker-end').forEach(el => {
-                    el.style.boxShadow = '0 2px 12px rgba(239, 68, 68, 0.6), 0 0 0 2px rgba(255,255,255,0.8)';
+                    el.style.boxShadow = '0 2px 12px rgba(30, 51, 48, 0.6), 0 0 0 2px rgba(255,255,255,0.8)';
                 });
                 document.querySelectorAll('.km-marker-dot').forEach(el => {
                     el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.6)';
@@ -3676,6 +3676,8 @@
             }
             document.getElementById('satelliteBtn').classList.toggle('bg-murcia', isSatellite);
             document.getElementById('satelliteBtn').classList.toggle('text-white', isSatellite);
+            const satIcon = document.getElementById('satelliteBtnIcon');
+            if (satIcon) satIcon.style.color = isSatellite ? '#FFFFFF' : 'var(--text-secondary)';
         }
 
         // ==================== TABS ====================
